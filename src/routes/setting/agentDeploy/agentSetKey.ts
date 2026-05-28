@@ -24,24 +24,24 @@ export default router.post(
         inputValues: JSON.stringify(inputValue),
       });
     try {
-      const resText = await u.Ai.Text(`toonflow:claude-haiku-4-5-20251001`).invoke({
+      const resText = await u.Ai.Text(`deepseek:deepseek-v4-pro`).invoke({
         prompt: "1+1等于几？,请直接回答2，不要解释",
       });
       if (resText.text) {
         await u.db("o_agentDeploy").where("key", "scriptAgent").update({
-          model: "claude-sonnet-4-6",
-          modelName: "toonflow:claude-sonnet-4-6",
-          vendorId: "toonflow",
+          model: "DeepSeek V4 Pro",
+          modelName: "toonflow:deepseek-v4-pro",
+          vendorId: "deepseek",
         });
         await u.db("o_agentDeploy").where("key", "productionAgent").update({
-          model: "claude-sonnet-4-6",
-          modelName: "toonflow:claude-sonnet-4-6",
-          vendorId: "toonflow",
+          model: "DeepSeek V4 Pro",
+          modelName: "deepseek:deepseek-v4-pro",
+          vendorId: "deepseek",
         });
         await u.db("o_agentDeploy").where("key", "universalAi").update({
-          model: "claude-haiku-4-5",
-          modelName: "toonflow:claude-haiku-4-5-20251001",
-          vendorId: "toonflow",
+          model: "DeepSeek V4 Pro",
+          modelName: "deepseek:deepseek-v4-pro",
+          vendorId: "deepseek",
         });
         res.status(200).send(success("一键填入成功"));
       }
@@ -50,7 +50,7 @@ export default router.post(
       inputValue.apiKey = "";
       await u
         .db("o_vendorConfig")
-        .where("id", "toonflow")
+        .where("id", "deepseek")
         .update({ inputValues: JSON.stringify(inputValue) });
       res.status(400).send(error("KEY无效，请重新输入"));
     }

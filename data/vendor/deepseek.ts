@@ -171,7 +171,6 @@ const textRequest = (model: TextModel, think: boolean, thinkLevel: 0 | 1 | 2 | 3
   if (enableThinking) {
     extraBody.reasoning_effort = effortMap[thinkLevel];
   }
-
   return createDeepSeek({
     baseURL: vendor.inputValues.baseUrl,
     apiKey,
