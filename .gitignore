@@ -56,3 +56,5 @@ data/oss/*
 data/test.sqlite
 version.txt
 data/plugin/*
+
+electron-builder.yml

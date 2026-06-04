@@ -13,7 +13,7 @@
     "url": "https://github.com/HBAI-Ltd/Toonflow-app/issues",
     "email": "ltlctools@outlook.com"
   },
-  "main": "build/main.js",
+  "main": "data/temp/main.js",
   "packageManager": "pnpm@11.4.0",
   "engines": {
     "node": "24.15.0"
@@ -26,10 +26,10 @@
     "lint": "tsc --noEmit",
     "build": "cross-env NODE_ENV=prod tsx scripts/build.ts",
     "pack": "electron-builder --dir",
-    "dist": "yarn build && electron-builder",
-    "dist:win": "yarn build && electron-builder --win",
-    "dist:mac": "yarn build && electron-builder --mac",
-    "dist:linux": "yarn build && electron-builder --linux",
+    "dist": "pnpm build && electron-builder && tsx scripts/clean.ts",
+    "dist:win": "pnpm build && electron-builder --win && tsx scripts/clean.ts",
+    "dist:mac": "pnpm build && electron-builder --mac && tsx scripts/clean.ts",
+    "dist:linux": "pnpm build && electron-builder --linux && tsx scripts/clean.ts",
     "debug:ai": "npx @ai-sdk/devtools",
     "license": "node scripts/license.ts",
     "vendor2json": "node scripts/vendor2json.ts"
@@ -84,6 +84,7 @@
     "@types/license-checker": "^25.0.6",
     "@types/lodash": "^4.17.24",
     "@types/morgan": "^1.9.10",
+    "bytenode": "^1.5.7",
     "cross-env": "^10.1.0",
     "electron": "^40.0.0",
     "electron-builder": "^26.4.0",
@@ -92,7 +93,8 @@
     "license-checker": "^25.0.1",
     "nodemon": "^3.1.11",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "yaml": "^2.9.0"
   },
   "overrides": {
     "@rmp135/sql-ts": {

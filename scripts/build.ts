@@ -1,85 +1,146 @@
 import esbuild from "esbuild";
 import fs from "fs";
 import path from "path";
+import bytenode from "bytenode";
+import YAML from "yaml";
+import type { Configuration } from "app-builder-lib";
 
-// 打包默认使用 prod 环境变量
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = "prod";
+process.env.NODE_ENV = "electron";
+
+const rootDir = process.cwd();
+const tempDir = path.resolve(rootDir, "data", "temp");
+const serveDir = path.resolve(rootDir, "data", "serve");
+
+const appFile = path.resolve(tempDir, "app.js");
+const mainFile = path.resolve(tempDir, "main.js");
+const appJscFile = path.resolve(serveDir, "app.jsc");
+const builderYmlFile = path.resolve(rootDir, "electron-builder.yml");
+
+const pkg = JSON.parse(fs.readFileSync(path.resolve(rootDir, "package.json"), "utf8"));
+const externalDeps = ["electron", "@huggingface/transformers", "onnxruntime-node", "sharp"];
+
+const baseConfig: esbuild.BuildOptions = {
+  bundle: true,
+  minify: false,
+  format: "cjs",
+  platform: "node",
+  target: "esnext",
+  tsconfig: "./tsconfig.json",
+  alias: {
+    "@": "./src",
+  },
+  external: externalDeps,
+  sourcemap: false,
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+    "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+  },
+};
+
+function ensureDir(dirPath: string) {
+  fs.mkdirSync(dirPath, { recursive: true });
 }
 
-const pkg = JSON.parse(fs.readFileSync(path.resolve("package.json"), "utf8"));
-
-const external = [
-  "electron",
-  "@huggingface/transformers",
-  "onnxruntime-node",
-  "vm2",
-  "sqlite3",
-  "better-sqlite3",
-  "sharp",
-  "mysql",
-  "mysql2",
-  "pg",
-  "pg-query-stream",
-  "oracledb",
-  "tedious",
-  "mssql",
-];
-
-// 后端服务打包配置
-const appBuildConfig: esbuild.BuildOptions = {
-  entryPoints: ["src/app.ts"],
-  bundle: true,
-  minify: false,
-  format: "cjs",
-  allowOverwrite: true,
-  outfile: `data/serve/app.js`,
-  platform: "node",
-  target: "esnext",
-  tsconfig: "./tsconfig.json",
-  alias: {
-    "@": "./src",
-  },
-  sourcemap: false,
-  external,
-  define: {
-    __APP_VERSION__: JSON.stringify(pkg.version),
-  },
-};
-
-// Electron 主进程打包配置
-const mainBuildConfig: esbuild.BuildOptions = {
-  entryPoints: ["scripts/main.ts"],
-  bundle: true,
-  minify: false,
-  format: "cjs",
-  outfile: `build/main.js`,
-  allowOverwrite: true,
-  platform: "node",
-  target: "esnext",
-  tsconfig: "./tsconfig.json",
-  alias: {
-    "@": "./src",
-  },
-  sourcemap: false,
-  external,
-  define: {
-    __APP_VERSION__: JSON.stringify(pkg.version),
-  },
-};
-
-(async () => {
-  try {
-    console.log("🔨 开始构建...\n");
-
-    // 并行构建
-    await Promise.all([esbuild.build(appBuildConfig), esbuild.build(mainBuildConfig)]);
-
-    console.log("✅ 后端服务构建完成: build/app.js");
-    console.log("✅ Electron主进程构建完成: build/main.js");
-    console.log("\n🎉 所有构建任务完成!\n");
-  } catch (err) {
-    console.error("❌ 构建失败:", err);
-    process.exit(1);
+// 顺带把 external 依赖的子依赖（如 sharp -> @img/*）也算进来，避免运行时缺包
+function collectExternalTree(deps: string[]): string[] {
+  const result = new Set<string>();
+  for (const name of deps) {
+    result.add(name);
+    try {
+      const pkgPath = require.resolve(`${name}/package.json`, { paths: [rootDir] });
+      const sub = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+      for (const k of Object.keys(sub.dependencies || {})) result.add(k);
+      for (const k of Object.keys(sub.optionalDependencies || {})) result.add(k);
+    } catch {
+      // ignore
+    }
   }
-})();
+  return [...result];
+}
+
+function generateBuilderYml() {
+  const all = collectExternalTree(externalDeps);
+
+  const config: Configuration = {
+    appId: "net.toonflow.solo",
+    productName: "ToonFlow",
+    copyright: "Copyright © 2026",
+    asar: false,
+    directories: { output: "dist" },
+    files: ["data/temp/**/*", "scripts/web/**/*", "env/**/*", "package.json", "!node_modules/**/*", ...all.map((n) => `node_modules/${n}/**/*`)],
+    asarUnpack: all.map((n) => `**/node_modules/${n}/**`),
+    extraResources: [
+      {
+        from: "data",
+        to: "data",
+        filter: ["**/*", "!db2.sqlite", "!logs/**", "!oss/**", "!temp/**"],
+      },
+    ],
+    win: {
+      target: ["nsis"],
+      icon: "./scripts/logo.ico",
+    },
+    nsis: {
+      oneClick: false,
+      allowToChangeInstallationDirectory: true,
+      perMachine: true,
+      differentialPackage: false,
+      artifactName: "${productName}-${version}-win-${arch}-setup.${ext}",
+      unicode: true,
+      deleteAppDataOnUninstall: true,
+    },
+    mac: {
+      target: ["dmg"],
+      icon: "./scripts/logo.icns",
+      category: "public.app-category.developer-tools",
+      artifactName: "${productName}-${version}-mac-${arch}.${ext}",
+    },
+    linux: {
+      target: ["AppImage"],
+      icon: "./scripts/logo.png",
+      category: "Development",
+      artifactName: "${productName}-${version}-linux-${arch}.${ext}",
+    },
+  };
+
+  const yml = "# AUTO-GENERATED by scripts/build.ts. DO NOT EDIT.\n" + YAML.stringify(config);
+  fs.writeFileSync(builderYmlFile, yml, "utf8");
+}
+
+async function build() {
+  ensureDir(tempDir);
+  ensureDir(serveDir);
+
+  console.log("🔨 开始构建...\n");
+
+  await Promise.all([
+    esbuild.build({
+      ...baseConfig,
+      entryPoints: ["src/app.ts"],
+      outfile: appFile,
+    }),
+    esbuild.build({
+      ...baseConfig,
+      entryPoints: ["scripts/main.ts"],
+      outfile: mainFile,
+    }),
+  ]);
+
+  console.log("✅ 构建完成: app.js / main.js / package.json");
+  console.log("\n🔨 开始编译字节码...");
+
+  await bytenode.compileFile({
+    filename: appFile,
+    output: appJscFile,
+  });
+
+  console.log("\n📝 生成 electron-builder.yml ...");
+  generateBuilderYml();
+
+  console.log("\n🔨 开始打包...\n\n");
+}
+
+build().catch((err) => {
+  console.error("❌ 构建失败:", err);
+  process.exit(1);
+});
