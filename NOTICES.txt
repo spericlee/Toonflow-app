@@ -1,0 +1,57 @@
+Name: @pnpm/dependency-path
+License: MIT
+Repository: https://github.com/pnpm/pnpm/tree/main/packages/dependency-path
+
+-----------------------------
+
+Name: @types/license-checker
+License: MIT
+Repository: https://github.com/DefinitelyTyped/DefinitelyTyped
+
+-----------------------------
+
+Name: app-builder-lib
+License: MIT
+Repository: https://github.com/electron-userland/electron-builder
+
+-----------------------------
+
+Name: cross-env
+License: MIT
+Repository: https://github.com/kentcdodds/cross-env
+
+-----------------------------
+
+Name: electron-builder
+License: MIT
+Repository: https://github.com/electron-userland/electron-builder
+
+-----------------------------
+
+Name: esbuild
+License: MIT
+Repository: https://github.com/evanw/esbuild
+
+-----------------------------
+
+Name: license-checker
+License: BSD-3-Clause
+Repository: https://github.com/davglass/license-checker
+
+-----------------------------
+
+Name: prettier
+License: MIT
+Repository: https://github.com/prettier/prettier
+
+-----------------------------
+
+Name: tsx
+License: MIT
+Repository: https://github.com/privatenumber/tsx
+
+-----------------------------
+
+Name: yaml
+License: ISC
+Repository: https://github.com/eemeli/yaml

@@ -1,21 +1,42 @@
 {
-  "name": "toonflow-monorepo",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
+  "name": "toonflow",
+  "version": "1.2.0",
+  "description": "Toonflow 是一款 AI 短剧漫剧工具，能够利用 AI 技术将小说自动转化为剧本，并结合 AI 生成的图片和视频，实现高效的短剧创作。",
+  "author": "HBAI-Ltd <ltlctools@outlook.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/HBAI-Ltd/Toonflow-app#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HBAI-Ltd/Toonflow-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HBAI-Ltd/Toonflow-app/issues",
+    "email": "ltlctools@outlook.com"
+  },
+  "main": "build/electron/main.cjs",
   "packageManager": "pnpm@11.4.0",
   "engines": {
     "node": "24.15.0"
   },
+  "private": true,
+  "type": "module",
   "scripts": {
+    "lint": "pnpm -r lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "dev:frontend": "pnpm --filter toonflow_web dev",
-    "dev:backend": "pnpm --filter toonflow dev",
-    "build:frontend": "pnpm --filter toonflow_web build",
-    "build:backend": "pnpm --filter toonflow build"
+    "dist:app": "pnpm --filter @toonflow/app run dist",
+    "pack:app": "pnpm --filter @toonflow/app run pack",
+    "dist:web": "pnpm --filter @toonflow/web run dist"
   },
   "devDependencies": {
-    "prettier": "^3.3.3"
+    "@pnpm/dependency-path": "^1001.1.10",
+    "@types/license-checker": "^25.0.6",
+    "app-builder-lib": "^26.8.1",
+    "cross-env": "^10.1.0",
+    "esbuild": "^0.28.0",
+    "license-checker": "^25.0.1",
+    "prettier": "^3.3.3",
+    "tsx": "^4.22.4",
+    "yaml": "^2.9.0"
   }
 }
