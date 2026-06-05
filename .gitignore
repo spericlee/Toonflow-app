@@ -1,60 +1,47 @@
-.devtools
-# dependencies (bun install)
+# Dependencies
 node_modules
-.vscode
-# output
-out
-dist
-*.tgz
 
-# code coverage
+# Build outputs
+dist
+dist-ssr
+build
+out
+.output
+.nuxt
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Coverage
 coverage
 *.lcov
 
-# logs
-logs
-_.log
-report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
-
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# caches
-.eslintcache
+# Caches
 .cache
+.eslintcache
 *.tsbuildinfo
 
-# IntelliJ based IDEs
-.idea
+# Environment
+.env
+.env.*.local
+.env.local
 
-# Finder (MacOS) folder config
+# OS
 .DS_Store
 
-build/*
-
-upload/*
-uploads/*
-
-db.sqlite
-db.sqlite-shm
-db.sqlite-wal
-
-web/*
-
-*.sqlite
-
-router.ts
-
-database.d.ts
-
-.devtools
-data/oss/*
-data/test.sqlite
-version.txt
-data/plugin/*
-
-electron-builder.yml
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.local
