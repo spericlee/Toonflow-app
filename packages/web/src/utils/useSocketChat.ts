@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { remoteTools, type ToolCoonfig } from "@/utils/umd/index";
+import { remoteTools, type ToolConfig } from "@/utils/umd/index";
 import settingStore from "@/stores/setting";
 import { io, Socket } from "socket.io-client";
 import type { ChatMessagesData, ChatMessageStatus } from "@tdesign-vue-next/chat";
@@ -52,7 +52,7 @@ export default () => {
   watch(
     remoteTools,
     (newVal) => {
-      const remoteToolsList = Object.entries(newVal as ToolCoonfig).flatMap(([groupKey, groupValue]) =>
+      const remoteToolsList = Object.entries(newVal as ToolConfig).flatMap(([groupKey, groupValue]) =>
         Object.entries(groupValue ?? {}).map(([toolKey, toolValue]) => ({
           path: `${groupKey}.${toolKey}`,
           description: toolValue.description,
@@ -66,7 +66,7 @@ export default () => {
 
   socket.on("runRemoteTool", ({ name, args }, callback) => {
     try {
-      const tool = _.get(remoteTools.value, name) as unknown as ToolCoonfig | undefined;
+      const tool = _.get(remoteTools.value, name) as unknown as ToolConfig | undefined;
       const input = JSON.parse(args);
       tool?.inputSchema.parse(input);
       const result = tool?.execute(input);

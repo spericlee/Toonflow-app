@@ -5,13 +5,13 @@
         <template #icon>
           <i-flash-payment theme="outline" />
         </template>
-        {{ $t('workbench.novel.event.regenerate') }}
+        {{ $t("workbench.novel.event.regenerate") }}
       </t-button>
       <t-button theme="danger" :disabled="selectedRowKeys.length === 0" @click="handleBatchDelete">
         <template #icon>
           <t-icon name="delete" />
         </template>
-        {{ $t('workbench.novel.event.batchDelete') }} {{ selectedRowKeys.length > 0 ? `(${selectedRowKeys.length})` : "" }}
+        {{ $t("workbench.novel.event.batchDelete") }} {{ selectedRowKeys.length > 0 ? `(${selectedRowKeys.length})` : "" }}
       </t-button>
     </t-space>
 
@@ -34,19 +34,19 @@
         @page-change="handlePageChange">
         <template #empty>
           <div class="empty c" style="flex-direction: column; gap: 12px">
-            <span>{{ $t('workbench.novel.event.noData') }}</span>
+            <span>{{ $t("workbench.novel.event.noData") }}</span>
             <t-button v-if="!isGenerating" theme="primary" @click="generateEvent">
               <template #icon>
                 <i-flash-payment theme="outline" />
               </template>
-              {{ $t('workbench.novel.event.generate') }}
+              {{ $t("workbench.novel.event.generate") }}
             </t-button>
           </div>
         </template>
         <template #loading>
           <div class="t-table--loading-message">
-            <span v-if="isGenerating">🎬 {{ $t('workbench.novel.event.generatingHint') }}</span>
-            <span v-else>{{ $t('workbench.novel.event.loading') }}</span>
+            <span v-if="isGenerating">🎬 {{ $t("workbench.novel.event.generatingHint") }}</span>
+            <span v-else>{{ $t("workbench.novel.event.loading") }}</span>
           </div>
         </template>
         <template #chapters="{ row }">
@@ -61,7 +61,7 @@
               <template #icon>
                 <t-icon name="delete" />
               </template>
-              {{ $t('workbench.novel.event.delete') }}
+              {{ $t("workbench.novel.event.delete") }}
             </t-button>
           </t-space>
         </template>
@@ -95,12 +95,12 @@ const columns = ref<Record<string, unknown>[]>([
     width: 50,
     align: "center",
   },
-  { colKey: "id", title: $t('workbench.novel.event.col.id'), width: 50, align: "center" },
-  { colKey: "eventName", title: $t('workbench.novel.event.col.eventName'), width: 150, align: "center" },
-  { colKey: "chapters", title: $t('workbench.novel.event.col.chapters'), width: 150, align: "center" },
-  { colKey: "detail", title: $t('workbench.novel.event.col.detail'), width: 400, ellipsis: true },
-  { colKey: "createTime", title: $t('workbench.novel.event.col.createTime'), width: 200, align: "center" },
-  { colKey: "operation", title: $t('workbench.novel.event.col.operation'), width: 150, align: "center" },
+  { colKey: "id", title: $t("workbench.novel.event.col.id"), width: 50, align: "center" },
+  { colKey: "eventName", title: $t("workbench.novel.event.col.eventName"), width: 150, align: "center" },
+  { colKey: "chapters", title: $t("workbench.novel.event.col.chapters"), width: 150, align: "center" },
+  { colKey: "detail", title: $t("workbench.novel.event.col.detail"), width: 400, ellipsis: true },
+  { colKey: "createTime", title: $t("workbench.novel.event.col.createTime"), width: 200, align: "center" },
+  { colKey: "operation", title: $t("workbench.novel.event.col.operation"), width: 150, align: "center" },
 ]);
 // 生成状态
 const isGenerating = ref(false);
@@ -132,14 +132,14 @@ async function getEvents() {
 // 处理删除事件
 function handleDelete(row: Record<string, unknown>) {
   const dialog = DialogPlugin.confirm({
-    header: $t('workbench.novel.event.msg.deleteHeader'),
-    body: $t('workbench.novel.event.msg.deleteBody'),
+    header: $t("workbench.novel.event.msg.deleteHeader"),
+    body: $t("workbench.novel.event.msg.deleteBody"),
     onConfirm: async () => {
       await axios.post("/novel/event/deletEvent", {
         id: row.id,
       });
       getEvents();
-      window.$message.success($t('workbench.novel.event.msg.deleteSuccess'));
+      window.$message.success($t("workbench.novel.event.msg.deleteSuccess"));
       dialog.destroy();
     },
   });
@@ -155,7 +155,7 @@ function generateEvent() {
     })
     .then((response) => {
       getEvents();
-      window.$message.success($t('workbench.novel.event.msg.generateSuccess'));
+      window.$message.success($t("workbench.novel.event.msg.generateSuccess"));
     })
     .catch((e) => {
       window.$message.error((e as Error).message);
@@ -182,14 +182,14 @@ function handleSelectChange(value: Array<string | number>, context: { selectedRo
 function handleBatchDelete() {
   if (selectedRowKeys.value.length === 0) return;
   const dialog = DialogPlugin.confirm({
-    header: $t('workbench.novel.event.msg.batchDeleteHeader'),
-    body: $t('workbench.novel.event.msg.batchDeleteBody', { count: selectedRowKeys.value.length }),
+    header: $t("workbench.novel.event.msg.batchDeleteHeader"),
+    body: $t("workbench.novel.event.msg.batchDeleteBody", { count: selectedRowKeys.value.length }),
     onConfirm: async () => {
       await axios.post("/novel/event/batchDeleteEvent", {
         ids: selectedRowKeys.value,
       });
       getEvents();
-      window.$message.success($t('workbench.novel.event.msg.batchDeleteSuccess'));
+      window.$message.success($t("workbench.novel.event.msg.batchDeleteSuccess"));
       dialog.destroy();
     },
   });

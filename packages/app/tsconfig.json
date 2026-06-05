@@ -8,21 +8,9 @@
     "strict": true,
     "sourceMap": false,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
-
+      "@/*": ["./src/*"]
+    }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "data",
-    "dist",
-    "build",
-    "backup"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "data", "dist", "build", "backup"]
 }

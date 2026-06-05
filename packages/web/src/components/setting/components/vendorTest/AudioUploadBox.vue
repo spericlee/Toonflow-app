@@ -1,23 +1,17 @@
 <template>
-  <div
-    class="audioUploadBox"
-    :class="{ hasFile: !!modelValue }"
-    @click="trigger"
-    @dragover.prevent
-    @drop.prevent="handleDrop"
-  >
+  <div class="audioUploadBox" :class="{ hasFile: !!modelValue }" @click="trigger" @dragover.prevent @drop.prevent="handleDrop">
     <template v-if="modelValue">
       <i-music-one theme="filled" size="26" fill="var(--td-success-color)" />
       <p class="boxText fileName">{{ modelValue.name }}</p>
     </template>
     <template v-else>
       <i-music-one theme="outline" size="26" fill="var(--td-brand-color)" />
-      <p class="boxText">{{ label || $t('settings.vendor.test.uploadAudio') }}</p>
+      <p class="boxText">{{ label || $t("settings.vendor.test.uploadAudio") }}</p>
     </template>
     <button v-if="modelValue" class="clearBtn" @click.stop="clear">
       <i-close theme="outline" size="12" />
     </button>
-    <input ref="inputRef" type="file" accept="audio/*" style="display:none" @change="handleChange" />
+    <input ref="inputRef" type="file" accept="audio/*" style="display: none" @change="handleChange" />
   </div>
 </template>
 
@@ -30,7 +24,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   "update:modelValue": [val: File | null];
 }>();
-
 
 const inputRef = ref<HTMLInputElement | null>(null);
 

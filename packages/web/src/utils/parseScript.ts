@@ -31,7 +31,6 @@ export interface Episode {
   text: string;
 }
 
-
 function parseNumber(numStr: string): number {
   if (/^\d+$/.test(numStr)) return parseInt(numStr, 10);
   if (/^十[一二三四五六七八九]?$/.test(numStr)) {
@@ -108,5 +107,3 @@ export default function parseScript(text: string, customRegStr?: string): Episod
 
   return episodes;
 }
-
-

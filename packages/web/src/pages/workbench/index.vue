@@ -53,7 +53,7 @@
             :key="index">
             <div
               class="item fc c"
-              v-if="menu.type === 'btn' && (project.projectType === 'novel' || !menu.nodelOnly)"
+              v-if="menu.type === 'btn' && (project.projectType === 'novel' || !menu.novelOnly)"
               :class="{ active: activeMenu == menu.path }"
               @click="handleClick(menu)">
               <component :is="menu.icon" class="icon" />
@@ -90,8 +90,8 @@ const menuList = ref([
 ]);
 
 const rightBtnList = ref([
-  { type: "btn", path: "/novel", labelKey: "workbench.menu.novel", icon: "i-notebook", nodelOnly: true },
-  { type: "btn", path: "/scriptAgent", labelKey: "workbench.menu.scriptAgent", icon: "i-color-filter", nodelOnly: true },
+  { type: "btn", path: "/novel", labelKey: "workbench.menu.novel", icon: "i-notebook", novelOnly: true },
+  { type: "btn", path: "/scriptAgent", labelKey: "workbench.menu.scriptAgent", icon: "i-color-filter", novelOnly: true },
   { type: "btn", path: "/script", labelKey: "workbench.menu.scriptManage", icon: "i-document-folder" },
   { type: "btn", path: "/cornerScape", labelKey: "workbench.menu.cornerScape", icon: "i-peoples-two" },
   { type: "btn", path: "/production", labelKey: "workbench.menu.production", icon: "i-carousel-video" },

@@ -1,10 +1,10 @@
 <template>
   <t-dialog
     v-model:visible="dialogVisible"
-    :header="$t('components.editMdPreivew.title')"
+    :header="$t('components.editMdPreview.title')"
     :width="'90vw'"
-    :confirm-btn="$t('components.editMdPreivew.confirm')"
-    :cancel-btn="$t('components.editMdPreivew.cancel')"
+    :confirm-btn="$t('components.editMdPreview.confirm')"
+    :cancel-btn="$t('components.editMdPreview.cancel')"
     @confirm="onConfirm"
     @cancel="onCancel"
     @close="onCancel"
@@ -17,7 +17,7 @@
       :toolbars="toolbars"
       :footers="[]"
       style="height: 72vh"
-      @onUploadImg="() => {}"
+      @on-upload-img="() => {}"
       @drop.prevent
       @paste="onPaste" />
   </t-dialog>

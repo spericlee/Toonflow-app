@@ -101,12 +101,7 @@ interface PollResult {
   error?: string;
 }
 
-type AtlasVideoModelKind =
-  | "seedanceTextToVideo"
-  | "seedanceReferenceToVideo"
-  | "seedanceImageToVideo"
-  | "wanReferenceToVideo"
-  | "generic";
+type AtlasVideoModelKind = "seedanceTextToVideo" | "seedanceReferenceToVideo" | "seedanceImageToVideo" | "wanReferenceToVideo" | "generic";
 
 // ============================================================
 // 全局声明
@@ -330,10 +325,7 @@ const normalizeResolution = (value: unknown, allowed: string[], fallback: string
   return fallback;
 };
 
-const getReferenceLimit = (
-  modes: VideoMode[],
-  prefix: "imageReference" | "videoReference" | "audioReference",
-): number | undefined => {
+const getReferenceLimit = (modes: VideoMode[], prefix: "imageReference" | "videoReference" | "audioReference"): number | undefined => {
   for (const mode of modes) {
     if (!Array.isArray(mode)) continue;
     for (const entry of mode) {
@@ -355,9 +347,18 @@ const summarizeRefCount = (usedCount: number, rawCount: number): string => {
 };
 
 const buildAtlasVideoPayload = (config: VideoConfig, model: VideoModel) => {
-  const rawImageRefs = (config.referenceList || []).filter((r) => r.type === "image").map((r) => r.base64).filter(Boolean);
-  const rawVideoRefs = (config.referenceList || []).filter((r) => r.type === "video").map((r) => r.base64).filter(Boolean);
-  const rawAudioRefs = (config.referenceList || []).filter((r) => r.type === "audio").map((r) => r.base64).filter(Boolean);
+  const rawImageRefs = (config.referenceList || [])
+    .filter((r) => r.type === "image")
+    .map((r) => r.base64)
+    .filter(Boolean);
+  const rawVideoRefs = (config.referenceList || [])
+    .filter((r) => r.type === "video")
+    .map((r) => r.base64)
+    .filter(Boolean);
+  const rawAudioRefs = (config.referenceList || [])
+    .filter((r) => r.type === "audio")
+    .map((r) => r.base64)
+    .filter(Boolean);
 
   const imageRefs = limitReferences(rawImageRefs, getReferenceLimit(model.mode, "imageReference"));
   const videoRefs = limitReferences(rawVideoRefs, getReferenceLimit(model.mode, "videoReference"));
@@ -434,10 +435,10 @@ const textRequest = (model: TextModel, think: boolean, thinkLevel: 0 | 1 | 2 | 3
       const rawBody = JSON.parse((options?.body as string) ?? "{}");
       const body = think
         ? {
-          ...rawBody,
-          thinking: { type: "enabled" },
-          reasoning_effort: effortMap[thinkLevel],
-        }
+            ...rawBody,
+            thinking: { type: "enabled" },
+            reasoning_effort: effortMap[thinkLevel],
+          }
         : rawBody;
       return await fetch(url, { ...options, body: JSON.stringify(body) });
     },
@@ -586,4 +587,4 @@ exports.ttsRequest = ttsRequest;
 exports.checkForUpdates = checkForUpdates;
 exports.updateVendor = updateVendor;
 
-export { };
+export {};

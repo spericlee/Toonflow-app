@@ -74,7 +74,7 @@
               <t-qrcode value="https://work.weixin.qq.com/u/vc36adcc89845edcbe?v=5.0.3.63936&bb=85b8d228e8" level="Q" type="svg" />
             </div>
             <div class="githubBox">
-              <p class="qrcodeLabel">{{ $t("hello.githubLabel")}}</p>
+              <p class="qrcodeLabel">{{ $t("hello.githubLabel") }}</p>
               <t-button theme="danger" size="large" @click="jumpGithub">
                 <template #icon><t-icon name="logo-github" /></template>
                 Star on GitHub
@@ -124,7 +124,7 @@ function openVendorConfig() {
 }
 
 function openAgentConfig() {
-  activeMenu.value = "agentConfog";
+  activeMenu.value = "agentConfig";
   showSetting.value = true;
 }
 

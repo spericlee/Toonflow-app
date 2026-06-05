@@ -20,11 +20,11 @@ function createDefaultMap<T extends string | number | symbol>(defaultValue: bool
 export default defineStore(
   "loadingStore",
   () => {
-    const videoGenerateloading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
-    const assetGenerateloading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
-    const assetGeneratePromptloading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
+    const videoGenerateLoading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
+    const assetGenerateLoading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
+    const assetGeneratePromptLoading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
     const scriptGenerateLoading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
-    const storeboardGenerateLoading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
+    const storyboardGenerateLoading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
 
     const batchGenerateImageLoading = ref<Record<string, boolean>>(createDefaultMap<string>(false));
     const batchGenerateStoryboardImageLoading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
@@ -32,11 +32,11 @@ export default defineStore(
     const batchGeneratePromptLoading = ref<Record<string, boolean>>(createDefaultMap<string>(false));
     const batchGenerateStoryboardPromptLoading = ref<Record<number, boolean>>(createDefaultMap<number>(false));
     return {
-      videoGenerateloading,
-      assetGenerateloading,
-      assetGeneratePromptloading,
+      videoGenerateLoading,
+      assetGenerateLoading,
+      assetGeneratePromptLoading,
       scriptGenerateLoading,
-      storeboardGenerateLoading,
+      storyboardGenerateLoading,
       batchGenerateImageLoading,
       batchGenerateStoryboardImageLoading,
       batchGeneratePromptLoading,

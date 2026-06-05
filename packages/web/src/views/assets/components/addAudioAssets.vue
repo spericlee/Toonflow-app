@@ -93,7 +93,7 @@ const props = defineProps<{
 const addAssetsShow = defineModel<boolean>({
   default: false,
 });
-const rules = ref<{}>({
+const rules = ref({
   name: [{ required: true, message: $t("workbench.assets.add.nameRequired"), trigger: "blur" }],
   describe: [{ required: true, message: $t("workbench.assets.add.describeRequired"), trigger: "blur" }],
 });

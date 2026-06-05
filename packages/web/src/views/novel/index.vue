@@ -104,7 +104,7 @@
       <div class="previewDialogContent">{{ previewContent || $t("workbench.novel.none") }}</div>
     </t-dialog>
     <importNovel v-model="importNovelShow" @select="getNovel" />
-    <editNodel v-model="editNodelShow" :formData="formData" @select="getNovel" />
+    <editNode v-model="editNodeShow" :formData="formData" @select="getNovel" />
   </div>
 </template>
 
@@ -112,7 +112,7 @@
 import dayjs from "dayjs";
 import axios from "@/utils/axios";
 import importNovel from "./components/importNovel.vue";
-import editNodel from "./components/editNodel.vue";
+import editNode from "./components/editNode.vue";
 import projectStore from "@/stores/project";
 import settingStore from "@/stores/setting";
 const { otherSetting } = storeToRefs(settingStore());
@@ -140,7 +140,7 @@ const columns = ref<Record<string, unknown>[]>([
   { colKey: "event", title: $t("workbench.novel.col.event"), ellipsis: true },
   { colKey: "operation", title: $t("workbench.novel.col.operation"), width: 200, align: "center" },
 ]);
-const editNodelShow = ref(false);
+const editNodeShow = ref(false);
 interface OriginalText {
   id: number;
   index: number;
@@ -244,7 +244,7 @@ function handleBatchDelete() {
 }
 // 编辑
 function handleEdit(row: OriginalText) {
-  editNodelShow.value = true;
+  editNodeShow.value = true;
   formData.value = { ...row };
 }
 // 删除
@@ -279,7 +279,7 @@ function startEventAnalysis() {
         .post("/novel/event/generateEvents", {
           projectId: project.value?.id!,
           novelIds: selectedRowKeys.value,
-          concurrentCount: otherSetting.value.assetsBatchGenereateSize,
+          concurrentCount: otherSetting.value.assetsBatchGenerateSize,
         })
         .then((res) => {
           selectedRowKeys.value.length = 0;
@@ -289,7 +289,7 @@ function startEventAnalysis() {
   });
 }
 
-const notCompultedData = computed(() => {
+const notCompletedData = computed(() => {
   return tableData.value.filter((item) => !item.eventState);
 });
 
@@ -297,8 +297,8 @@ const notCompultedData = computed(() => {
 let pollingTimer: ReturnType<typeof setInterval> | null = null;
 
 async function pollEventState() {
-  if (notCompultedData.value.length === 0) return;
-  const ids = notCompultedData.value.map((item) => item.id);
+  if (notCompletedData.value.length === 0) return;
+  const ids = notCompletedData.value.map((item) => item.id);
   try {
     const { data } = await axios.post("/novel/getNovelEventState", { ids });
     if (Array.isArray(data)) {
@@ -319,7 +319,7 @@ async function pollEventState() {
 function startPolling() {
   if (pollingTimer) return;
   pollingTimer = setInterval(async () => {
-    if (notCompultedData.value.length === 0) {
+    if (notCompletedData.value.length === 0) {
       stopPolling();
       return;
     }
@@ -334,7 +334,7 @@ function stopPolling() {
   }
 }
 
-watch(notCompultedData, (val) => {
+watch(notCompletedData, (val) => {
   if (val.length > 0) {
     startPolling();
   } else {

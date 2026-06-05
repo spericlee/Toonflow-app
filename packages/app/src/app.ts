@@ -1,4 +1,4 @@
-console.log(`[环境变量：${process.env}] 已设置`);
+console.log(`[环境变量：${process.env.NODE_ENV}] 已设置`);
 import "./err";
 import express, { Request, Response, NextFunction } from "express";
 import { Server } from "socket.io";
@@ -69,7 +69,7 @@ export default async function startServe() {
     res.status(err.status || 500).send(err);
   });
 
-  const listenPort = Number(process.env.PORT) || 10588;
+  const listenPort = Number(process.env.PORT ?? 10588);
   return await new Promise((resolve) => {
     server.listen(listenPort, async () => {
       const address = server.address();
@@ -96,4 +96,10 @@ export function closeServe(): Promise<void> {
   });
 }
 
-if (process.env.NODE_ENV !== "electron") startServe();
+if (process.env.NODE_ENV !== "electron") {
+  startServe();
+} else {
+  startServe().then((port) => {
+    process.send?.({ type: "ready", port });
+  });
+}

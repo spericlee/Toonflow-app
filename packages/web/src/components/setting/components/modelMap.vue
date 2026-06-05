@@ -109,7 +109,7 @@
               :footers="[]"
               style="height: 55vh; width: 100%"
               :placeholder="$t('workbench.project.dialog.prompt.placeholder')"
-              @onUploadImg="() => {}" />
+              @on-upload-img="() => {}" />
           </t-form-item>
         </t-form>
       </div>

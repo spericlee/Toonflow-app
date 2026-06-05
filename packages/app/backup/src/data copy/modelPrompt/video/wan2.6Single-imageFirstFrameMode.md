@@ -33,20 +33,20 @@
 
 从 `videoDesc` 括号内按顿号分隔提取以下12个字段：
 
-| 序号 | 字段 | 用途 |
-|------|------|------|
-| 1 | 画面描述 | 叙事主干 |
-| 2 | 场景 | 匹配场景资产 |
-| 3 | 关联资产名称 | 匹配角色/道具资产 |
-| 4 | 时长 | 控制时长参数 |
-| 5 | 景别 | 控制镜头景别 |
-| 6 | 运镜 | 控制运镜方式 |
-| 7 | 角色动作 | 动作描写 |
-| 8 | 情绪 | 情绪氛围 |
-| 9 | 光影氛围 | 光影描写 |
-| 10 | 台词 | 台词/音频段 |
-| 11 | 音效 | 音效描写 |
-| 12 | 关联资产ID | 资产ID↔角色标签映射 |
+| 序号 | 字段         | 用途                |
+| ---- | ------------ | ------------------- |
+| 1    | 画面描述     | 叙事主干            |
+| 2    | 场景         | 匹配场景资产        |
+| 3    | 关联资产名称 | 匹配角色/道具资产   |
+| 4    | 时长         | 控制时长参数        |
+| 5    | 景别         | 控制镜头景别        |
+| 6    | 运镜         | 控制运镜方式        |
+| 7    | 角色动作     | 动作描写            |
+| 8    | 情绪         | 情绪氛围            |
+| 9    | 光影氛围     | 光影描写            |
+| 10   | 台词         | 台词/音频段         |
+| 11   | 音效         | 音效描写            |
+| 12   | 关联资产ID   | 资产ID↔角色标签映射 |
 
 ### 4. 通用约束
 
@@ -62,27 +62,27 @@
 
 ### 5. 景别 → 镜头标签映射
 
-| videoDesc 景别 | 英文标签 |
-|------|------|
-| 远景 | extreme wide shot |
-| 全景 | wide establishing shot |
-| 中景 | medium shot |
-| 近景 | close-up |
-| 特写 | close-up |
-| 大特写 | extreme close-up |
+| videoDesc 景别 | 英文标签               |
+| -------------- | ---------------------- |
+| 远景           | extreme wide shot      |
+| 全景           | wide establishing shot |
+| 中景           | medium shot            |
+| 近景           | close-up               |
+| 特写           | close-up               |
+| 大特写         | extreme close-up       |
 
 ### 6. 运镜 → 镜头标签映射
 
-| videoDesc 运镜 | 英文标签 |
-|------|------|
-| 静止 | static camera |
-| 推进 | dolly in / push in |
-| 拉远 | dolly out / pull back |
-| 跟踪 | tracking shot |
-| 摇镜 | pan left/right |
-| 甩镜 | whip pan |
-| 升降 | crane up/down |
-| 环绕 | surround shooting |
+| videoDesc 运镜 | 英文标签              |
+| -------------- | --------------------- |
+| 静止           | static camera         |
+| 推进           | dolly in / push in    |
+| 拉远           | dolly out / pull back |
+| 跟踪           | tracking shot         |
+| 摇镜           | pan left/right        |
+| 甩镜           | whip pan              |
+| 升降           | crane up/down         |
+| 环绕           | surround shooting     |
 
 ---
 
@@ -92,7 +92,7 @@
 - **单条分镜输入/输出**：每次仅输入一条 `<storyboardItem>` 及其关联资产信息，输出也仅为一段完整的叙事式提示词
 - **叙事式英文提示词**：像写小说一样描写画面，禁止标签罗列（不写 `4K, cinematic, high quality` 这类堆砌）
 - **三段式结构**：风格基调 → 主体动作 + 场景环境 + 光线氛围 → 镜头收尾
-- **纯文本提示词**：提示词内**不使用任何 `@图N ` 引用**，全部内容用纯文本描述  
+- **纯文本提示词**：提示词内**不使用任何 `@图N ` 引用**，全部内容用纯文本描述
 - **严格遵循 videoDesc**：提示词内容严格基于 videoDesc 中的画面描述、时长、景别、运镜、角色动作、情绪、光影氛围、台词、音效字段生成，不编造额外内容
 
 ---
@@ -115,15 +115,15 @@
 
 ## 叙事式写法要点
 
-| 原则 | 说明 | 示例 |
-|------|------|------|
-| 风格基调放最前 | 一句话定性整体气质 | `A cinematic epic scene` |
-| 主体+动作紧密绑定 | 主体后面直接跟动作，外观细节嵌入主体描述 | `A young man in dark flowing robes stands alone atop the city wall` |
-| 情绪用动作暗示 | 不直接陈述情绪 | ❌ `He is sad.` → ✅ `head drops slowly, shoulders slumped` |
-| 环境融入叙事 | 不罗列环境属性 | ✅ `hazy blue sky stretches over the emerald valley` |
-| 光线单独成句 | 光线方向+色温+质感+情绪 | `Warm golden hour light streams from behind, casting long shadows across the stone floor` |
-| 镜头语言收尾 | 一句话点睛 | `Captured in a wide establishing shot from a low-angle perspective, static camera` |
-| 禁止标签堆砌 | 不写 `4K, cinematic, high quality` | `cinematic` 融入风格基调即可 |
+| 原则              | 说明                                     | 示例                                                                                      |
+| ----------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------- |
+| 风格基调放最前    | 一句话定性整体气质                       | `A cinematic epic scene`                                                                  |
+| 主体+动作紧密绑定 | 主体后面直接跟动作，外观细节嵌入主体描述 | `A young man in dark flowing robes stands alone atop the city wall`                       |
+| 情绪用动作暗示    | 不直接陈述情绪                           | ❌ `He is sad.` → ✅ `head drops slowly, shoulders slumped`                               |
+| 环境融入叙事      | 不罗列环境属性                           | ✅ `hazy blue sky stretches over the emerald valley`                                      |
+| 光线单独成句      | 光线方向+色温+质感+情绪                  | `Warm golden hour light streams from behind, casting long shadows across the stone floor` |
+| 镜头语言收尾      | 一句话点睛                               | `Captured in a wide establishing shot from a low-angle perspective, static camera`        |
+| 禁止标签堆砌      | 不写 `4K, cinematic, high quality`       | `cinematic` 融入风格基调即可                                                              |
 
 ---
 

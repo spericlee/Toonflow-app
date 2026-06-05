@@ -32,7 +32,7 @@ import type {
   AttachmentContent,
   ActivityContent,
   ReasoningContent,
-} from "./chat-types"; // 👈 改成你自己的类型文件路径
+} from "./chatMessagesData";
 
 // 任意内容块（AI 的 + 用户的，方便容器内部统一存取）
 type AnyContent = AIMessageContent | UserMessageContent;
@@ -50,7 +50,11 @@ const genId = (prefix = "msg"): string => `${prefix}_${Date.now().toString(36)}_
 
 /** 所有内容块共有的链式方法 */
 class BaseBlockBuilder<C extends ChatBaseContent<any, any>, P> {
-  constructor(protected _block: C, protected _parent: P, protected _notify: Notify) {}
+  constructor(
+    protected _block: C,
+    protected _parent: P,
+    protected _notify: Notify,
+  ) {}
 
   /** 设置该块状态：pending / streaming / complete / stop / error */
   status(s: ChatMessageStatus): this {
@@ -381,7 +385,11 @@ class ReasoningBuilder<P> extends BlockContainer {
 class MessageHandle extends BlockContainer {
   protected _notify: Notify;
 
-  constructor(public readonly message: ChatMessagesData, private _kit: ChatKit, notify: Notify) {
+  constructor(
+    public readonly message: ChatMessagesData,
+    private _kit: ChatKit,
+    notify: Notify,
+  ) {
     super();
     this._notify = notify;
   }

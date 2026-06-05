@@ -12,14 +12,14 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     About: typeof import('./../components/setting/components/about.vue')['default']
-    AgentConfog: typeof import('./../components/setting/components/agentConfog.vue')['default']
+    AgentConfig: typeof import('./../components/setting/components/agentConfig.vue')['default']
     AudioUploadBox: typeof import('./../components/setting/components/vendorTest/AudioUploadBox.vue')['default']
     ContextMenu: typeof import('./../components/edit/contextMenu.vue')['default']
     DbConfig: typeof import('./../components/setting/components/dbConfig.vue')['default']
     DevConfig: typeof import('./../components/setting/components/devConfig.vue')['default']
     Edge: typeof import('./../components/edit/edge.vue')['default']
     Edit: typeof import('./../components/edit/index.vue')['default']
-    EditMdPreivew: typeof import('./../components/editMdPreivew.vue')['default']
+    EditMdPreview: typeof import('./../components/editMdPreview.vue')['default']
     FileManagement: typeof import('./../components/setting/components/fileManagement.vue')['default']
     Hello: typeof import('./../components/hello.vue')['default']
     ImageModelTest: typeof import('./../components/setting/components/vendorTest/ImageModelTest.vue')['default']

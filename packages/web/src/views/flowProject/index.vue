@@ -33,7 +33,7 @@
             <div class="editBtn" @click.stop="openEdit(project)">
               <i-edit :size="18" />
             </div>
-            <div class="removeBtn" @click.stop="delProjcer(project.id)">
+            <div class="removeBtn" @click.stop="delProject(project.id)">
               <i-delete :size="18" />
             </div>
           </div>
@@ -42,7 +42,7 @@
     </div>
     <t-empty v-else></t-empty>
   </div>
-  <projectDialog v-model="dialogShow" :projectData="editProjectData" @submit="getallFlowProject" />
+  <projectDialog v-model="dialogShow" :projectData="editProjectData" @submit="getAllFlowProject" />
   <editFlow v-model="show" v-if="show" dataType="infiniteCanvas" :dataId="flowProject!?.id" />
 </template>
 
@@ -64,7 +64,7 @@ const editProjectData = ref<{
   intro: string;
 } | null>(null);
 
-async function getallFlowProject() {
+async function getAllFlowProject() {
   axios.post("/flowProject/getFlowProject").then(({ data }) => {
     allFlowProject.value = data;
   });
@@ -73,7 +73,7 @@ async function getallFlowProject() {
 onMounted(() => {
   flowProject.value = null;
   project.value = null;
-  getallFlowProject();
+  getAllFlowProject();
 });
 
 const router = useRouter();
@@ -93,7 +93,7 @@ function openEdit(item: { id: string; name: string; intro: string }) {
   dialogShow.value = true;
 }
 
-function delProjcer(projectId: string | undefined) {
+function delProject(projectId: string | undefined) {
   const dialog = DialogPlugin.confirm({
     header: $t("workbench.project.msg.deleteHeader"),
     body: $t("workbench.project.msg.deleteBody"),
@@ -104,7 +104,7 @@ function delProjcer(projectId: string | undefined) {
         .post("/flowProject/delProject", { id: projectId })
         .then(() => {
           window.$message.success($t("workbench.project.msg.deleteSuccess"));
-          getallFlowProject();
+          getAllFlowProject();
         })
         .catch((e) => {
           window.$message.error(e.message ?? $t("workbench.project.msg.deleteFailed"));

@@ -1,6 +1,6 @@
 {
   "components": {
-    "editMdPreivew": {
+    "editMdPreview": {
       "title": "編集",
       "confirm": "保存",
       "cancel": "キャンセル"

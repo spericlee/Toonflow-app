@@ -1,11 +1,24 @@
+# 依赖
 node_modules
+
+# 构建产物
 dist
 build
-.output
-.nuxt
-coverage
-*.min.js
-*.min.css
-package-lock.json
+pack
+backup
+
+# 锁文件
 pnpm-lock.yaml
+package-lock.json
 yarn.lock
+
+# 编译产物
+**/*.min.js
+**/*.cjs
+
+# 自动生成的文件
+**/auto-imports.d.ts
+**/components.d.ts
+
+# 其他
+.git

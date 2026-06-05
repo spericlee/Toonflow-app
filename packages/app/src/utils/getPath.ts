@@ -2,8 +2,7 @@ import path from "path";
 import isPathInside from "is-path-inside";
 
 export default (fileName?: string[] | string) => {
-  const basePath =
-    process.env.NODE_ENV === "electron" ? path.join(require("electron").app.getPath("userData"), "data") : path.join(process.cwd(), "data");
+  const basePath = process.env.NODE_ENV === "electron" ? process.env.DATADIR! : path.join(process.cwd(), "data");
 
   if (!fileName) return basePath;
 

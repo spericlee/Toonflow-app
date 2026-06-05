@@ -11,7 +11,9 @@
           editProjectData = null;
           dialogShow = true;
         ">
-        <template #icon><i-plus class="addIcon" :size="20" /></template>
+        <template #icon>
+          <i-plus class="addIcon" :size="20" />
+        </template>
         {{ $t("workbench.project.newProject") }}
       </t-button>
     </div>
@@ -27,7 +29,9 @@
             </t-tag>
           </div>
         </div>
-        <t-tag shape="round" v-if="project.artStyle" style="align-self: flex-start">{{ project.artStyle }}</t-tag>
+        <t-tag shape="round" v-if="project.artStyle" style="align-self: flex-start">
+          {{ project.artStyle }}
+        </t-tag>
         <div class="intro">
           {{ project.intro }}
         </div>
@@ -39,7 +43,7 @@
             <div class="editBtn" @click.stop="openEdit(project)">
               <i-edit :size="18" />
             </div>
-            <div class="removeBtn" @click.stop="delProjcer(project.id)">
+            <div class="removeBtn" @click.stop="delProject(project.id)">
               <i-delete :size="18" />
             </div>
           </div>
@@ -188,7 +192,7 @@ function addProjectFn(data: {
     });
 }
 
-function delProjcer(projectId: string | undefined) {
+function delProject(projectId: string | undefined) {
   const dialog = DialogPlugin.confirm({
     header: $t("workbench.project.msg.deleteHeader"),
     body: $t("workbench.project.msg.deleteBody"),

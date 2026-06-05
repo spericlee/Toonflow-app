@@ -89,7 +89,11 @@ export default async () => {
       title: $t("skillScan.scanFailed"),
       content: $t("skillScan.checkNetwork"),
       footer: () =>
-        h("div", { style: "text-align: right; padding-top: 4px;" }, h("span", { style: "color: #e34d59; font-size: 12px;" }, $t("skillScan.retryLater"))),
+        h(
+          "div",
+          { style: "text-align: right; padding-top: 4px;" },
+          h("span", { style: "color: #e34d59; font-size: 12px;" }, $t("skillScan.retryLater")),
+        ),
       duration: 3000,
       closeBtn: true,
     });

@@ -74,8 +74,8 @@ export default function parseNovel(text: string): Reel[] {
       chapters.push({ index: 1, chapter: "", text: text.trim() });
     } else {
       for (let i = 0; i < matches.length; i++) {
-        const start = matches[i].index! + matches[i][0].length;
-        const end = i + 1 < matches.length ? matches[i + 1].index! : text.length;
+        const start = matches[i].index + matches[i][0].length;
+        const end = i + 1 < matches.length ? matches[i + 1].index : text.length;
         const content = text
           .slice(start, end)
           .replace(/^[\r\n]+/, "")

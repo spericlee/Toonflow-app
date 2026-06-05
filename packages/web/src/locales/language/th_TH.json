@@ -1,6 +1,6 @@
 {
   "components": {
-    "editMdPreivew": {
+    "editMdPreview": {
       "title": "แก้ไข",
       "confirm": "บันทึก",
       "cancel": "ยกเลิก"

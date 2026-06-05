@@ -92,8 +92,7 @@ declare const jsonwebtoken: any;
 const vendor: VendorConfig = {
   id: "vidu",
   author: "搬砖的Coder",
-  description:
-    "Vidu 官方视频生成平台。 [前往平台](https://platform.vidu.cn/login/)",
+  description: "Vidu 官方视频生成平台。 [前往平台](https://platform.vidu.cn/login/)",
   name: "Vidu 开放平台",
   inputs: [
     { key: "apiKey", label: "API密钥", type: "password", required: true, placeholder: "请到Vidu官方申请" },

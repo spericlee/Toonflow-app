@@ -1,20 +1,14 @@
 <template>
-  <div
-    class="videoUploadBox"
-    :class="{ hasFile: !!modelValue }"
-    @click="trigger"
-    @dragover.prevent
-    @drop.prevent="handleDrop"
-  >
+  <div class="videoUploadBox" :class="{ hasFile: !!modelValue }" @click="trigger" @dragover.prevent @drop.prevent="handleDrop">
     <video v-if="modelValue && previewUrl" :src="previewUrl" class="preview" muted />
     <template v-else>
       <i-video-one theme="outline" size="26" fill="var(--td-brand-color)" />
-      <p class="boxText">{{ label || $t('settings.vendor.test.uploadVideo') }}</p>
+      <p class="boxText">{{ label || $t("settings.vendor.test.uploadVideo") }}</p>
     </template>
     <button v-if="modelValue" class="clearBtn" @click.stop="clear">
       <i-close theme="outline" size="12" />
     </button>
-    <input ref="inputRef" type="file" accept="video/*" style="display:none" @change="handleChange" />
+    <input ref="inputRef" type="file" accept="video/*" style="display: none" @change="handleChange" />
   </div>
 </template>
 
@@ -27,7 +21,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   "update:modelValue": [val: File | null];
 }>();
-
 
 const inputRef = ref<HTMLInputElement | null>(null);
 const previewUrl = ref("");

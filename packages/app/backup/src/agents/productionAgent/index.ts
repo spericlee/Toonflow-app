@@ -114,7 +114,8 @@ async function consumeStream(ctx: GlobalContext, fullStream: AsyncIterable<any>,
   const flushStep = () => {
     if (box) {
       const empty = !(box.raw() as any).content?.length;
-      if (empty) box.remove(); // 这一步没产出 → 删掉空 loading 消息
+      if (empty)
+        box.remove(); // 这一步没产出 → 删掉空 loading 消息
       else {
         decisionMsg?.end();
         box.end();

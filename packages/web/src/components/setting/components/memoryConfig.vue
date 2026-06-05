@@ -45,7 +45,7 @@
       <div class="actionRow f frr">
         <t-button theme="primary" type="submit" :loading="saving">{{ $t("settings.memory.saveConfig") }}</t-button>
         <t-button theme="danger" variant="outline" :loading="clearing" @click="handleClearMemory">{{ $t("settings.memory.clearMemory") }}</t-button>
-        <t-button theme="warning" variant="outline" :loading="saving" @click="handleRestory">{{ $t("settings.memory.restoreDefault") }}</t-button>
+        <t-button theme="warning" variant="outline" :loading="saving" @click="handleRestore">{{ $t("settings.memory.restoreDefault") }}</t-button>
       </div>
     </t-form>
   </div>
@@ -141,7 +141,7 @@ async function handleClearMemory() {
   });
 }
 
-function handleRestory() {
+function handleRestore() {
   formData.value = {
     messagesPerSummary: 3,
     shortTermLimit: 5,

@@ -1,0 +1,9 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["javascript", "typescript", "vue"],
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "cSpell.enabled": true,
+  "cSpell.configFile": "${workspaceFolder}/cspell.json"
+}

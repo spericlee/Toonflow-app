@@ -13,9 +13,9 @@
       <div class="content">
         <div class="toolbar">
           <t-space>
-            <span class="selectedInfo">{{ $t('workbench.assets.batch.selected', { count: selectedRowKeys.length }) }}</span>
-            <t-button theme="primary" size="small" @click="handleSelectAll">{{ $t('workbench.assets.batch.selectAll') }}</t-button>
-            <t-button theme="default" size="small" @click="handleClearSelection">{{ $t('workbench.assets.batch.clearSelection') }}</t-button>
+            <span class="selectedInfo">{{ $t("workbench.assets.batch.selected", { count: selectedRowKeys.length }) }}</span>
+            <t-button theme="primary" size="small" @click="handleSelectAll">{{ $t("workbench.assets.batch.selectAll") }}</t-button>
+            <t-button theme="default" size="small" @click="handleClearSelection">{{ $t("workbench.assets.batch.clearSelection") }}</t-button>
           </t-space>
           <t-input v-model="searchText" :placeholder="$t('workbench.assets.searchPlaceholder')" clearable style="width: 400px; margin-left: 10px">
             <template #prefix-icon>
@@ -26,13 +26,13 @@
             <t-button theme="primary" @click="handleBatchGeneratePrompt" :loading="textLoading" :disabled="textLoading">
               <div class="ac">
                 <i-translate theme="outline" size="20" />
-                {{ $t('workbench.assets.generatePrompt') }}
+                {{ $t("workbench.assets.generatePrompt") }}
               </div>
             </t-button>
             <t-button theme="primary" style="margin-left: 10px" @click="handleBatchGenerateImage" :loading="imageLoading" :disabled="imageLoading">
               <div class="ac">
                 <i-pic theme="outline" size="20" />
-                {{ $t('workbench.assets.generateImage') }}
+                {{ $t("workbench.assets.generateImage") }}
               </div>
             </t-button>
           </div>
@@ -62,7 +62,7 @@
                     </div>
                     <div v-if="row.filePath" class="imageHoverOverlay">
                       <t-icon name="browse" size="20px" />
-                      <span class="hoverText">{{ $t('workbench.assets.preview') }}</span>
+                      <span class="hoverText">{{ $t("workbench.assets.preview") }}</span>
                     </div>
                   </div>
                 </template>
@@ -78,8 +78,10 @@
       </div>
       <template #footer>
         <t-space>
-          <t-button theme="default" @click="handleCancel">{{ $t('workbench.assets.cancelBtn') }}</t-button>
-          <t-button theme="primary" @click="onConfirm" :disabled="selectedRowKeys.length === 0">{{ $t('workbench.assets.batch.saveSelected', { count: selectedRowKeys.length }) }}</t-button>
+          <t-button theme="default" @click="handleCancel">{{ $t("workbench.assets.cancelBtn") }}</t-button>
+          <t-button theme="primary" @click="onConfirm" :disabled="selectedRowKeys.length === 0">
+            {{ $t("workbench.assets.batch.saveSelected", { count: selectedRowKeys.length }) }}
+          </t-button>
         </t-space>
       </template>
     </t-dialog>
@@ -105,21 +107,21 @@ const columns: TableProps["columns"] = [
   { colKey: "row-select", type: "multiple", width: 50, align: "center", fixed: "left" },
   {
     colKey: "filePath",
-    title: $t('workbench.assets.batch.colPreviewImg'),
+    title: $t("workbench.assets.batch.colPreviewImg"),
     width: 100,
     align: "center",
     cell: "preview",
   },
   {
     colKey: "name",
-    title: $t('workbench.assets.colName'),
+    title: $t("workbench.assets.colName"),
     width: 150,
     align: "left",
     ellipsis: true,
   },
   {
     colKey: "prompt",
-    title: $t('workbench.assets.colPrompt'),
+    title: $t("workbench.assets.colPrompt"),
     minWidth: 200,
     align: "left",
     ellipsis: true,
@@ -241,7 +243,7 @@ function handleCancel() {
   closeModal();
 }
 async function processBatch<T>(list: T[], handler: (item: T) => Promise<void>) {
-  const batchSize = otherSetting.value.assetsBatchGenereateSize || 5; // 从设置中获取批量生成的大小，默认为5
+  const batchSize = otherSetting.value.assetsBatchGenerateSize || 5; // 从设置中获取批量生成的大小，默认为5
   for (let i = 0; i < list.length; i += batchSize) {
     await Promise.all(list.slice(i, i + batchSize).map(handler));
   }
@@ -250,12 +252,12 @@ const emit = defineEmits(["update"]);
 
 async function onConfirm() {
   if (selectedRowKeys.value.length === 0) {
-    window.$message.warning($t('workbench.assets.selectAtLeastOne'));
+    window.$message.warning($t("workbench.assets.selectAtLeastOne"));
     return;
   }
   const selectedAssets = tableData.value.filter((item) => selectedRowKeys.value.includes(item.id));
   if (selectedAssets.length === 0) {
-    window.$message.error($t('workbench.assets.batch.selectToSave'));
+    window.$message.error($t("workbench.assets.batch.selectToSave"));
     return;
   }
 
@@ -280,12 +282,12 @@ async function onConfirm() {
       }
     });
 
-    window.$message.success($t('workbench.assets.batch.saveSuccess'));
+    window.$message.success($t("workbench.assets.batch.saveSuccess"));
     emit("update"); // 通知父组件更新数据
     closeModal();
   } catch (error) {
     console.error("保存失败:", error);
-    window.$message.error($t('workbench.assets.batch.saveFail'));
+    window.$message.error($t("workbench.assets.batch.saveFail"));
   }
 }
 const textLoading = ref(false);
@@ -294,21 +296,21 @@ const promptGenerateCancel = ref(false);
 async function handleBatchGeneratePrompt() {
   const selectedAssets = tableData.value.filter((item) => selectedRowKeys.value.includes(item.id));
   if (selectedAssets.length === 0) {
-    window.$message.error($t('workbench.assets.selectAtLeastOne'));
+    window.$message.error($t("workbench.assets.selectAtLeastOne"));
     return;
   }
   promptGenerateCancel.value = false;
   textLoading.value = true;
-  const batchSize = otherSetting.value.assetsBatchGenereateSize || 5; // 从设置中获取批量生成的大小，默认为5
+  const batchSize = otherSetting.value.assetsBatchGenerateSize || 5; // 从设置中获取批量生成的大小，默认为5
   try {
     for (let i = 0; i < selectedAssets.length; i += batchSize) {
-      if (promptGenerateCancel.value) throw new Error($t('workbench.assets.batch.promptGenCancelled'));
+      if (promptGenerateCancel.value) throw new Error($t("workbench.assets.batch.promptGenCancelled"));
       const batch = selectedAssets.slice(i, i + batchSize);
       await Promise.allSettled(batch.map((item) => generatePrompt(item)));
     }
-    window.$message.success($t('workbench.assets.batch.promptDone'));
+    window.$message.success($t("workbench.assets.batch.promptDone"));
   } catch (e) {
-    if (e instanceof Error && e.message !== $t('workbench.assets.batch.promptGenCancelled')) {
+    if (e instanceof Error && e.message !== $t("workbench.assets.batch.promptGenCancelled")) {
       window.$message.error(e.message);
     }
   } finally {
@@ -336,7 +338,7 @@ async function generatePrompt(data: AssetItem) {
       }
     }
   } catch (e: any) {
-    window.$message.error(`"${data.name}" ${e?.message ?? $t('workbench.assets.batch.promptFail')}`);
+    window.$message.error(`"${data.name}" ${e?.message ?? $t("workbench.assets.batch.promptFail")}`);
   } finally {
     rowPromptLoading.value[data.id] = false;
   }
@@ -347,21 +349,21 @@ const imageGenerateCancel = ref(false);
 async function handleBatchGenerateImage() {
   const selectedAssets = tableData.value.filter((item) => selectedRowKeys.value.includes(item.id));
   if (selectedAssets.length === 0) {
-    window.$message.warning($t('workbench.assets.selectAtLeastOne'));
+    window.$message.warning($t("workbench.assets.selectAtLeastOne"));
     return;
   }
   // 检查是否所有选中的资产都有提示词
   const assetsWithoutPrompt = selectedAssets.filter((item) => !item.prompt || item.prompt.trim() === "");
   if (assetsWithoutPrompt.length > 0) {
-    window.$message.warning($t('workbench.assets.batch.missingPrompts', { count: assetsWithoutPrompt.length }));
+    window.$message.warning($t("workbench.assets.batch.missingPrompts", { count: assetsWithoutPrompt.length }));
     return;
   }
   imageGenerateCancel.value = false;
   imageLoading.value = true;
-  const batchSize = otherSetting.value.assetsBatchGenereateSize || 5; // 从设置中获取批量生成的大小，默认为5
+  const batchSize = otherSetting.value.assetsBatchGenerateSize || 5; // 从设置中获取批量生成的大小，默认为5
   try {
     for (let i = 0; i < selectedAssets.length; i += batchSize) {
-      if (imageGenerateCancel.value) throw new Error($t('workbench.assets.batch.promptGenCancelled'));
+      if (imageGenerateCancel.value) throw new Error($t("workbench.assets.batch.promptGenCancelled"));
       const batch = selectedAssets.slice(i, i + batchSize);
       await Promise.allSettled(
         batch.map((item) =>
@@ -374,9 +376,9 @@ async function handleBatchGenerateImage() {
         ),
       );
     }
-    window.$message.success($t('workbench.assets.batch.imageDone'));
+    window.$message.success($t("workbench.assets.batch.imageDone"));
   } catch (e) {
-    if (e instanceof Error && e.message !== $t('workbench.assets.batch.promptGenCancelled')) {
+    if (e instanceof Error && e.message !== $t("workbench.assets.batch.promptGenCancelled")) {
       window.$message.error(e.message);
     }
   } finally {
@@ -409,7 +411,9 @@ async function startGenerate(data: { id: number; prompt: string; name: string; t
     }
   } catch (e: any) {
     if (!imageGenerateCancel.value) {
-      window.$message.error(`"${data.name}" ${$t('workbench.assets.batch.imageGenFail')}: ${e?.message ?? $t('workbench.assets.batch.unknownError')}`);
+      window.$message.error(
+        `"${data.name}" ${$t("workbench.assets.batch.imageGenFail")}: ${e?.message ?? $t("workbench.assets.batch.unknownError")}`,
+      );
     }
   } finally {
     rowImageLoading.value[data.id] = false;

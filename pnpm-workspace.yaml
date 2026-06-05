@@ -1,9 +1,9 @@
 packages:
-  - 'packages/*'
-  - 'shared'
+  - "packages/*"
+  - "shared"
 
 allowBuilds:
-  '@parcel/watcher': true
+  "@parcel/watcher": true
   better-sqlite3: true
   electron: true
   electron-winstaller: true

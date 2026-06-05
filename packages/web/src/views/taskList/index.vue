@@ -44,7 +44,7 @@
           v-model:pageSize="pageValue.limit"
           show-size-changer
           :total="pageValue.total"
-          @showSizeChange="onShowSizeChange"
+          @show-size-change="onShowSizeChange"
           @change="changeFn" />
       </div>
       <taskDetails v-model:open="open" :row="currentRow"></taskDetails>

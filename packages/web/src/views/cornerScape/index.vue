@@ -639,7 +639,7 @@ async function batchGenerationPrompt() {
         name: item.name,
         describe: item.describe,
       })),
-      concurrentCount: otherSetting.value.assetsBatchGenereateSize,
+      concurrentCount: otherSetting.value.assetsBatchGenerateSize,
       otherTextPrompt: otherTextPrompt.value,
     });
   } catch (e: any) {
@@ -672,7 +672,7 @@ async function batchSelectBindAudio() {
     await axios.post("/cornerScape/batchBindAudio", {
       projectId: project.value?.id,
       assetsIds: items.map((item) => item.id),
-      concurrentCount: otherSetting.value.assetsBatchGenereateSize,
+      concurrentCount: otherSetting.value.assetsBatchGenerateSize,
     });
   } catch (e: any) {
     window.$message.error(e.message ?? $t("workbench.cornerScape.msg.promptGenFail"));
@@ -715,7 +715,7 @@ async function batchGenerationImage() {
   items.forEach((item) => setItemState(item.id, "生成中"));
 
   window.$message.success(
-    $t("workbench.cornerScape.msg.batchStarted", { count: items.length, concurrent: otherSetting.value.assetsBatchGenereateSize }),
+    $t("workbench.cornerScape.msg.batchStarted", { count: items.length, concurrent: otherSetting.value.assetsBatchGenerateSize }),
   );
 
   try {
@@ -723,7 +723,7 @@ async function batchGenerationImage() {
       projectId: project.value?.id,
       model: selectValue.value,
       resolution: resolution.value,
-      concurrentCount: otherSetting.value.assetsBatchGenereateSize,
+      concurrentCount: otherSetting.value.assetsBatchGenerateSize,
       items: items.map((item) => ({
         id: item.id,
         type: item.type ?? "props",
@@ -738,7 +738,7 @@ async function batchGenerationImage() {
   }
 }
 //轮询
-const notCompultedData = computed(() => {
+const notCompletedData = computed(() => {
   return dataList.value.filter((item) => item.promptState == "生成中");
 });
 const generatingData = computed(() => {
@@ -754,8 +754,8 @@ let audioBindPollingTimer: ReturnType<typeof setInterval> | null = null;
 
 //轮询提示词生成
 async function pollingPromptAssets() {
-  if (notCompultedData.value.length === 0) return;
-  const ids = notCompultedData.value.map((item) => item.id);
+  if (notCompletedData.value.length === 0) return;
+  const ids = notCompletedData.value.map((item) => item.id);
   try {
     const { data } = await axios.post("/assets/pollingPromptAssets", { ids });
     let hasCompleted = false;
@@ -877,7 +877,7 @@ async function pollingAudioBind() {
 function startPolling() {
   if (pollingTimer) return;
   pollingTimer = setInterval(async () => {
-    if (notCompultedData.value.length === 0) {
+    if (notCompletedData.value.length === 0) {
       stopPolling();
       return;
     }
@@ -926,7 +926,7 @@ function startAudioPolling() {
   }, 3000);
 }
 
-watch(notCompultedData, (val) => {
+watch(notCompletedData, (val) => {
   if (val.length > 0) {
     startPolling();
   } else {

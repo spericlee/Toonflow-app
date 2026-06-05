@@ -34,9 +34,9 @@ const edgePath = computed(() =>
 
 const path = computed(() => edgePath.value[0]);
 const btnStyle = computed(() => ({
-  position: 'absolute' as const,
+  position: "absolute" as const,
   transform: `translate(-50%, -50%) translate(${edgePath.value[1]}px, ${edgePath.value[2]}px)`,
-  pointerEvents: 'all' as const,
+  pointerEvents: "all" as const,
 }));
 
 const { removeEdges } = useVueFlow();

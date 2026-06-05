@@ -11,24 +11,27 @@
       @blur="handleBlur"
       @mousedown.stop></div>
     <Teleport to="body">
-    <div v-if="showReferences" class="referencesPopup" :style="{ left: popupPosition.left + 'px', top: popupPosition.top + 'px', position: 'fixed' }">
-      <div class="referencesList">
-        <div
-          v-for="(item, index) in references"
-          :key="index"
-          class="reference-item"
-          :class="{ active: activeIndex === index }"
-          @mousedown.prevent="selectReference(index)">
-          <t-image v-if="item.type === 'image'" :src="item.src" fit="cover" class="ref-popup-img" />
-          <i-video v-else-if="item.type === 'video'" class="ref-popup-icon" />
-          <i-volume-mute v-else-if="item.type === 'audio'" class="ref-popup-icon" />
-          <span v-else class="ref-popup-text">文</span>
-          <span class="reference-label">{{ $t("workbench.production.editImage.reference", { index: index + 1 }) }}</span>
-          <span class="ref-index-badge">#{{ index + 1 }}</span>
+      <div
+        v-if="showReferences"
+        class="referencesPopup"
+        :style="{ left: popupPosition.left + 'px', top: popupPosition.top + 'px', position: 'fixed' }">
+        <div class="referencesList">
+          <div
+            v-for="(item, index) in references"
+            :key="index"
+            class="reference-item"
+            :class="{ active: activeIndex === index }"
+            @mousedown.prevent="selectReference(index)">
+            <t-image v-if="item.type === 'image'" :src="item.src" fit="cover" class="ref-popup-img" />
+            <i-video v-else-if="item.type === 'video'" class="ref-popup-icon" />
+            <i-volume-mute v-else-if="item.type === 'audio'" class="ref-popup-icon" />
+            <span v-else class="ref-popup-text">文</span>
+            <span class="reference-label">{{ $t("workbench.production.editImage.reference", { index: index + 1 }) }}</span>
+            <span class="ref-index-badge">#{{ index + 1 }}</span>
+          </div>
+          <div v-if="!references?.length" class="no-references">{{ $t("workbench.production.editImage.noReferences") }}</div>
         </div>
-        <div v-if="!references?.length" class="no-references">{{ $t("workbench.production.editImage.noReferences") }}</div>
       </div>
-    </div>
     </Teleport>
   </div>
 </template>
@@ -40,7 +43,7 @@ import { Video, VolumeMute } from "@icon-park/vue-next";
 
 const props = defineProps<{
   references?: { type: "image" | "video" | "audio" | "text"; src: string }[];
-  placeholder?: String;
+  placeholder?: string;
 }>();
 
 const prompt = defineModel<string>({ default: "" });

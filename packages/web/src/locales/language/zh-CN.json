@@ -1,6 +1,6 @@
 {
   "components": {
-    "editMdPreivew": {
+    "editMdPreview": {
       "title": "编辑",
       "confirm": "保存",
       "cancel": "取消"
@@ -87,7 +87,7 @@
       "vendorConfig": "模型服务",
       "modelMap": "提示词模板映射",
       "agentConfig": "Agent配置",
-      "pluginConfog": "插件管理",
+      "pluginConfig": "插件管理",
       "promptManage": "提示词管理",
       "skillManagement": "Skills技能管理",
       "memoryConfig": "Agent记忆配置",

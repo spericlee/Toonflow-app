@@ -95,7 +95,7 @@ export default defineConfig({
       "/oss": {
         target: "http://localhost:10588",
         changeOrigin: true,
-      }
-    }
+      },
+    },
   },
 });

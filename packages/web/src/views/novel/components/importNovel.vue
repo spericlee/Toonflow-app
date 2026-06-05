@@ -61,9 +61,7 @@
               <div class="selectedInfo">{{ $t("workbench.novel.import.selectedInfo", { count: selectedTextLength }) }}</div>
               <div style="margin-top: 16px; text-align: right">
                 <t-button variant="outline" @click="activeKey = 'To1'">{{ $t("workbench.novel.import.prevStep") }}</t-button>
-                <t-button theme="primary" style="margin-left: 10px" :loading="nextLoading" @click="keep">
-                  保存
-                </t-button>
+                <t-button theme="primary" style="margin-left: 10px" :loading="nextLoading" @click="keep">保存</t-button>
               </div>
             </div>
           </t-tab-panel>

@@ -67,8 +67,8 @@
         </div>
       </div>
     </div>
-    <editScript v-model="detailsShow" :item="selectedScript" @searchScripts="searchScripts" />
-    <addScript v-model="addScriptShow" @searchScripts="searchScripts" />
+    <editScript v-model="detailsShow" :item="selectedScript" @search-scripts="searchScripts" />
+    <addScript v-model="addScriptShow" @search-scripts="searchScripts" />
     <batchAddScript v-model="batchScriptShow" @select="searchScripts" />
   </div>
 </template>
@@ -222,7 +222,7 @@ async function handleExtractAssets() {
     await axios.post("/script/extractAssets", {
       scriptIds: selectedIds.value,
       projectId: project.value!.id,
-      groupSize: otherSetting.value.assetsBatchGenereateSize,
+      groupSize: otherSetting.value.assetsBatchGenerateSize,
     });
     searchScripts();
     selectedIds.value = [];

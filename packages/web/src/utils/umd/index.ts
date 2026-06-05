@@ -52,10 +52,10 @@ function loadUmd(url: string, globalName: string): Promise<any> {
   });
 }
 
-export type ToolCoonfig<TAttrs extends z.ZodObject<z.ZodRawShape> = z.ZodObject<z.ZodRawShape>> = {
+export type ToolConfig<TAttrs extends z.ZodObject<z.ZodRawShape> = z.ZodObject<z.ZodRawShape>> = {
   description: string;
   inputSchema: TAttrs;
   execute: (inputSchema: z.infer<TAttrs>) => void;
 };
 
-export const remoteTools = ref<Record<`${string}:${string}`, Record<string, ToolCoonfig>>>({});
+export const remoteTools = ref<Record<`${string}:${string}`, Record<string, ToolConfig>>>({});

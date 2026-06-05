@@ -29,12 +29,12 @@
           <t-radio-button :value="true">{{ $t("settings.other.openIsInteracting") }}</t-radio-button>
         </t-radio-group>
       </t-form-item>
-      <t-form-item :label="$t('settings.other.assetConcurrency')" name="assetsBatchGenereateSize">
+      <t-form-item :label="$t('settings.other.assetConcurrency')" name="assetsBatchGenerateSize">
         <t-input-number
           auto-width
           :suffix="$t('settings.other.count')"
           :min="1"
-          v-model="otherSetting.assetsBatchGenereateSize"
+          v-model="otherSetting.assetsBatchGenerateSize"
           :allowInputOverLimit="false"
           :placeholder="$t('settings.other.inputCount')" />
       </t-form-item>

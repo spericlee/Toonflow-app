@@ -33,8 +33,7 @@ export default (nsp: Namespace) => {
     socket.on("syncMessages", (messages: ChatMessagesData[]) => (globalContext.messages = messages));
 
     socket.on("chat", async (data: { content: string }) => {
-      agent.runDecisionAI(globalContext)
-
+      agent.runDecisionAI(globalContext);
     });
   });
   nsp.on("disconnect", (socket: Socket) => {

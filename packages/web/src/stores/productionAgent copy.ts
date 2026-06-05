@@ -217,7 +217,7 @@ function makeProductionAgentStore(projectId: string) {
           scriptId: episodesId.value,
           projectId: projectId,
           storyboardIds: allIds,
-          concurrentCount: settingStore().otherSetting.assetsBatchGenereateSize,
+          concurrentCount: settingStore().otherSetting.assetsBatchGenerateSize,
           compulsory,
         });
         if (data) {
@@ -254,7 +254,7 @@ function makeProductionAgentStore(projectId: string) {
           assetIds: allIds,
           projectId: projectId,
           scriptId: episodesId.value,
-          concurrentCount: settingStore().otherSetting.assetsBatchGenereateSize,
+          concurrentCount: settingStore().otherSetting.assetsBatchGenerateSize,
         });
         if (data) {
           data.forEach((record: { id: number; state: "未生成" | "生成中" | "已完成" | "生成失败"; src: string }) => {

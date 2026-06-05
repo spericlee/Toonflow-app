@@ -13,5 +13,4 @@ declare global {
 
 window.$message = MessagePlugin;
 
-
 window.$t = t;

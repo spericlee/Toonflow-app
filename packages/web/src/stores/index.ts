@@ -3,7 +3,7 @@ import axios from "@/utils/axios";
 export default defineStore(
   "index",
   () => {
-    const version = ref('v1.0.7')
+    const version = ref("v1.0.7");
 
     const activeMenu = ref<string>("");
 

@@ -3,9 +3,8 @@
   "include": ["src/**/*", "src/**/*.vue", "vite.config.*"],
   "exclude": ["node_modules", "dist", "coverage", "**/*.test.ts", "src/**/__tests__/*"],
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "noEmit": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },

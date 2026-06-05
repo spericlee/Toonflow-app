@@ -172,7 +172,7 @@
         </div>
       </Pane>
     </Splitpanes>
-    <editMdPreivew v-model="dialogVisible" @save="onConfirm" :content="editContent" />
+    <editMdPreview v-model="dialogVisible" @save="onConfirm" :content="editContent" />
 
     <!-- 剧本编辑对话框 -->
     <t-dialog
@@ -196,7 +196,7 @@
             :toolbars="toolbars"
             :footers="[]"
             style="height: 50vh"
-            @onUploadImg="() => {}"
+            @on-upload-img="() => {}"
             @drop.prevent />
         </div>
       </div>
@@ -215,7 +215,7 @@ import axios from "@/utils/axios";
 import type { ChatMessagesData } from "@tdesign-vue-next/chat";
 import projectStore from "@/stores/project";
 const { project } = storeToRefs(projectStore());
-import editMdPreivew from "@/components/editMdPreivew.vue";
+import editMdPreview from "@/components/editMdPreview.vue";
 import scriptAgentStore from "@/stores/scriptAgent";
 const { connected, messages, status, planData, thinkLevel } = storeToRefs(scriptAgentStore());
 const thinkLevelOptions = [

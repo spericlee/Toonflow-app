@@ -1,10 +1,12 @@
 # Copilot Instructions
 
 ## Scope
+
 - This workspace is a Vite 5 single-page app built with Vue 3, TypeScript, Pinia, Vue Router, TDesign, Dockview, and editor-related packages.
 - Use `pnpm` for all package and script commands. The lockfile is `pnpm-lock.yaml`.
 
 ## Code Style
+
 - Prefer simple, direct solutions. Reduce nesting, remove redundant branches, and avoid unnecessary abstractions.
 - Keep functions small and focused. Extract only when reuse or readability clearly improves.
 - Use lower camelCase for function names, variables, computed values, refs, methods, and event handlers.

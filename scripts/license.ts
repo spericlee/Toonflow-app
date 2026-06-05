@@ -88,13 +88,13 @@ export function generateNotices(): Promise<void> {
             }
             return acc;
           }, new Map<string, PackageInfo>())
-          .values()
+          .values(),
       );
 
       const content = dedupedDeclare
         .map(
           (pkg) =>
-            `Name: ${pkg.name}\nLicense: ${Array.isArray(pkg.licenses) ? pkg.licenses.join(", ") : pkg.licenses}\nRepository: ${pkg.repository ?? "N/A"}`
+            `Name: ${pkg.name}\nLicense: ${Array.isArray(pkg.licenses) ? pkg.licenses.join(", ") : pkg.licenses}\nRepository: ${pkg.repository ?? "N/A"}`,
         )
         .join("\n\n-----------------------------\n\n");
       fs.writeFileSync(path.resolve(process.cwd(), "NOTICES.txt"), content, "utf-8");

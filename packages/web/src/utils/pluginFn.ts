@@ -11,7 +11,7 @@ export const assets = {
   update: (data: Record<string, any>) => axios.post("/plugin/assets/update", data),
   del: (id: number | number[]) => axios.post("/plugin/assets/delete", { id }),
   list: (params: Record<string, any> = {}) => axios.post("/plugin/assets/list", params),
-  item:(id: number) => axios.post("/plugin/assets/item", { id }),
+  item: (id: number) => axios.post("/plugin/assets/item", { id }),
   updateAssetsUrl: async (assetsId: number, imageUrl: string, flowId: number) => {
     await axios.post("/production/assets/updateAssetsUrl", {
       id: assetsId,

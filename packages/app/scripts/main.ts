@@ -1,24 +1,47 @@
 import { app, BrowserWindow } from "electron";
-import fs from "fs";
+import { fork, ChildProcess } from "child_process";
 import path from "path";
 
-let baseUrl = "http://192.168.2.49:50188";
+const cpus = 10;
+const baseUrl = "http://192.168.2.49:50188";
 
 let mainWindow: BrowserWindow | null = null;
-let port = 0;
-let closeServeFn = undefined as (() => Promise<void>) | undefined;
+const workers: ChildProcess[] = [];
 
-function startServe(): Promise<void> {
-  return new Promise(async (resolve) => {
-    const baseDir = app.isPackaged ? app.getAppPath() : process.cwd();
+function startServe(): Promise<number[]> {
+  return new Promise((resolve, reject) => {
+    const baseDir = app.isPackaged ? app.getAppPath() : path.resolve(process.cwd(), "../../");
     const serveEntry = path.join(baseDir, "build", "server", "app.cjs");
-    if (!fs.existsSync(serveEntry)) {
-      throw new Error(`后端入口不存在: ${serveEntry}`);
+    const workerCount = Math.max(1, cpus - 1);
+    const ports: number[] = [];
+    for (let i = 0; i < workerCount; i++) {
+      const worker = fork(serveEntry, [], {
+        execPath: process.execPath,
+        env: {
+          ...process.env,
+          NODE_ENV: "electron",
+          WORKER_ID: String(i),
+          PORT: "0",
+          DATADIR: path.join(app.getPath("userData"), "data"),
+          ELECTRON_RUN_AS_NODE: "1",
+        },
+        stdio: ["inherit", "inherit", "inherit", "ipc"],
+      });
+      worker.on("message", (msg: { type: string; port: number }) => {
+        if (msg?.type === "ready") {
+          ports.push(msg.port);
+          // 所有 worker 都就绪后 resolve
+          if (ports.length === workerCount) {
+            resolve(ports);
+          }
+        }
+      });
+      worker.on("error", (err) => {
+        console.error(`Worker ${i} error:`, err);
+        reject(err);
+      });
+      workers.push(worker);
     }
-    const mod = require(serveEntry);
-    closeServeFn = mod.closeServe;
-    port = await mod.default(true);
-    resolve();
   });
 }
 
@@ -49,18 +72,20 @@ function createWindow(): void {
     }
   });
 
-  const url = baseUrl + "/#/loading";
-
-  mainWindow.loadURL(url);
-
+  mainWindow.loadURL(baseUrl + "/#/loading");
   mainWindow.on("closed", () => (mainWindow = null));
 }
 
 app.whenReady().then(() => {
   createWindow();
-  startServe().then(() => {
-    mainWindow?.webContents.send("serve-ready", { port });
-  });
+
+  startServe()
+    .then((port) => {
+      console.log(`[主进程] 服务就绪，端口：${port}`);
+    })
+    .catch((err) => {
+      console.error("[主进程] 服务启动失败：", err);
+    });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -70,6 +95,7 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
+  workers.forEach((worker) => worker.kill());
   if (process.platform !== "darwin") {
     app.quit();
   }

@@ -1,6 +1,6 @@
 {
   "components": {
-    "editMdPreivew": {
+    "editMdPreview": {
       "title": "Chỉnh sửa",
       "confirm": "Lưu",
       "cancel": "Hủy"

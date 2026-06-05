@@ -55,15 +55,7 @@ export interface VideoPollingOptions {
  * ```
  */
 export function createVideoPolling(id: number | string, options: VideoPollingOptions = {}) {
-  const {
-    interval = 5000,
-    maxErrors = 10,
-    maxBackoffDelay = 30000,
-    onData,
-    onComplete,
-    onError,
-    onMaxErrors,
-  } = options;
+  const { interval = 5000, maxErrors = 10, maxBackoffDelay = 30000, onData, onComplete, onError, onMaxErrors } = options;
 
   /** 待轮询的视频 ID 列表 */
   let pendingIds: Array<number | string> = [];
@@ -106,9 +98,7 @@ export function createVideoPolling(id: number | string, options: VideoPollingOpt
       onData?.(records);
 
       // 移除已完成（成功或失败）的 ID
-      const doneIds = records
-        .filter((r) => r.state === "生成成功" || r.state === "生成失败")
-        .map((r) => r.id);
+      const doneIds = records.filter((r) => r.state === "生成成功" || r.state === "生成失败").map((r) => r.id);
       if (doneIds.length > 0) {
         pendingIds = pendingIds.filter((id) => !doneIds.includes(id));
       }
@@ -143,9 +133,7 @@ export function createVideoPolling(id: number | string, options: VideoPollingOpt
       await poll();
       // 轮询完成后若仍有待查询 ID，继续安排下一次
       if (pendingIds.length > 0 && !destroyed) {
-        const nextDelay = errorCount > 0
-          ? Math.min(interval * Math.pow(2, errorCount - 1), maxBackoffDelay)
-          : interval;
+        const nextDelay = errorCount > 0 ? Math.min(interval * Math.pow(2, errorCount - 1), maxBackoffDelay) : interval;
         scheduleNext(nextDelay);
       }
     }, delay);

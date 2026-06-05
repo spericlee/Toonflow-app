@@ -91,15 +91,15 @@
 
 Toonflow supports the following interface languages:
 
-| Language             | Language              |
-| -------------------- | --------------------- |
-| Chinese (Simplified) | 简体中文              |
-| Chinese (Traditional)| 繁體中文              |
-| English              | English               |
-| Thai                 | ไทย                  |
-| Vietnamese           | Tiếng Việt            |
-| Japanese             | 日本語                |
-| Russian              | Русский               |
+| Language              | Language   |
+| --------------------- | ---------- |
+| Chinese (Simplified)  | 简体中文   |
+| Chinese (Traditional) | 繁體中文   |
+| English               | English    |
+| Thai                  | ไทย        |
+| Vietnamese            | Tiếng Việt |
+| Japanese              | 日本語     |
+| Russian               | Русский    |
 
 > 💡 More languages are being adapted — contributions for translations are welcome!
 
@@ -200,22 +200,22 @@ If the video cannot play, please [click to download](./screenshot/demo.mp4)
 
 ## Demo Info
 
-| Item              | Details                                  |
-| :---------------- | :--------------------------------------- |
-| Production Cycle  | Approximately 2 hours                    |
-| Video Model       | Seedance 2.0                             |
-| Image Model       | GPT Image 2                              |
-| Language Model    | Claude Opus 4.6                          |
-| Total Duration    | Approximately 2 minutes (raw 3 min, cut ~1 min of unusable footage) |
+| Item             | Details                                                             |
+| :--------------- | :------------------------------------------------------------------ |
+| Production Cycle | Approximately 2 hours                                               |
+| Video Model      | Seedance 2.0                                                        |
+| Image Model      | GPT Image 2                                                         |
+| Language Model   | Claude Opus 4.6                                                     |
+| Total Duration   | Approximately 2 minutes (raw 3 min, cut ~1 min of unusable footage) |
 
 ## Cost Breakdown
 
-| Model Type     | Cost         |
-| :------------- | :----------- |
-| Language Model | ~￥10        |
-| Video Model (full generation) | ~￥120 |
-| Image Model    | Less than ￥1|
-| **Total**      | **~￥130**   |
+| Model Type                    | Cost          |
+| :---------------------------- | :------------ |
+| Language Model                | ~￥10         |
+| Video Model (full generation) | ~￥120        |
+| Image Model                   | Less than ￥1 |
+| **Total**                     | **~￥130**    |
 
 > **Disclaimer**: The demo's original resolution is 1080×1882; the release version has been compressed to 480p. If there are any copyright issues, please contact us to delete it.
 
@@ -235,11 +235,11 @@ Before installing and using this software, please prepare the following:
 
 ### 1. Download & Install
 
-| OS      | GitHub                                                       | Notes                         |
-| :-----: | :----------------------------------------------------------- | :---------------------------- |
-| Windows | [Release](https://github.com/HBAI-Ltd/Toonflow-app/releases) | Official release package      |
-| Linux   | [Release](https://github.com/HBAI-Ltd/Toonflow-app/releases) | Official release package      |
-| macOS   | [Release](https://github.com/HBAI-Ltd/Toonflow-app/releases) | Official release package      |
+|   OS    | GitHub                                                       | Notes                    |
+| :-----: | :----------------------------------------------------------- | :----------------------- |
+| Windows | [Release](https://github.com/HBAI-Ltd/Toonflow-app/releases) | Official release package |
+|  Linux  | [Release](https://github.com/HBAI-Ltd/Toonflow-app/releases) | Official release package |
+|  macOS  | [Release](https://github.com/HBAI-Ltd/Toonflow-app/releases) | Official release package |
 
 > [!CAUTION]
 > On macOS, go to Settings > Privacy & Security to configure security settings; otherwise, the app may not open due to certificate issues.
@@ -288,17 +288,17 @@ docker run -d -p <local_port>:10588 -v <local_data_path>:/app/data toonflow
 
 ### Service Port Description
 
-| Port   | Purpose          | Deployment Mapping |
-| ------ | ---------------- | ------------------ |
-| `10588`| Software UI      | `10588:10588`      |
+| Port    | Purpose     | Deployment Mapping |
+| ------- | ----------- | ------------------ |
+| `10588` | Software UI | `10588:10588`      |
 
 **Environment Variables:**
 
-| Variable  | Description                                |
-| --------- | ------------------------------------------ |
-| `NODE_ENV`| Running environment; `prod` for production |
-| `PORT`    | Service listening port (default 10588)     |
-| `OSSURL`  | File storage access URL for static assets  |
+| Variable   | Description                                |
+| ---------- | ------------------------------------------ |
+| `NODE_ENV` | Running environment; `prod` for production |
+| `PORT`     | Service listening port (default 10588)     |
+| `OSSURL`   | File storage access URL for static assets  |
 
 ---
 
@@ -365,11 +365,11 @@ Create `pm2.json` file:
 
 **Environment Variable Description:**
 
-| Variable  | Description                                |
-| --------- | ------------------------------------------ |
-| `NODE_ENV`| Running environment; `prod` for production |
-| `PORT`    | Service listening port                     |
-| `OSSURL`  | File storage access URL for static assets  |
+| Variable   | Description                                |
+| ---------- | ------------------------------------------ |
+| `NODE_ENV` | Running environment; `prod` for production |
+| `PORT`     | Service listening port                     |
+| `OSSURL`   | File storage access URL for static assets  |
 
 ---
 
@@ -416,18 +416,18 @@ If you need to deploy or customize the frontend separately, please refer to the 
 
 ## 🛠️ Tech Stack
 
-| Category      | Technology                                                                                    |
-| ------------- | --------------------------------------------------------------------------------------------- |
-| Runtime       | Node.js 23.11.1+                                                                              |
-| Language      | TypeScript 5.x                                                                                |
-| Backend       | Express 5                                                                                     |
-| Database      | SQLite (better-sqlite3 / knex)                                                                |
-| AI Integration| Vercel AI SDK (OpenAI / Anthropic / Google / DeepSeek / Zhipu / MiniMax / Tongyi Qianwen / xAI)|
-| Local Inference| @huggingface/transformers (ONNX)                                                              |
-| Real-time     | Socket.IO                                                                                     |
-| Desktop       | Electron 40                                                                                   |
-| Image Processing| Sharp                                                                                       |
-| Containerization| Docker                                                                                     |
+| Category         | Technology                                                                                      |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| Runtime          | Node.js 23.11.1+                                                                                |
+| Language         | TypeScript 5.x                                                                                  |
+| Backend          | Express 5                                                                                       |
+| Database         | SQLite (better-sqlite3 / knex)                                                                  |
+| AI Integration   | Vercel AI SDK (OpenAI / Anthropic / Google / DeepSeek / Zhipu / MiniMax / Tongyi Qianwen / xAI) |
+| Local Inference  | @huggingface/transformers (ONNX)                                                                |
+| Real-time        | Socket.IO                                                                                       |
+| Desktop          | Electron 40                                                                                     |
+| Image Processing | Sharp                                                                                           |
+| Containerization | Docker                                                                                          |
 
 ## Development Environment Setup
 
@@ -463,7 +463,6 @@ If you need to deploy or customize the frontend separately, please refer to the 
 3. **Start Development Environment**
 
    This project includes both the **backend API service** and **frontend pages**. Choose the appropriate startup method:
-
    - **Method 1: Start backend only**
 
      ```bash
@@ -489,7 +488,6 @@ If you need to deploy or customize the frontend separately, please refer to the 
      > Runs the compiled service in production mode (requires `yarn build` first).
 
 4. **Package the Project**
-
    - Compile and generate TypeScript files:
 
      ```bash
@@ -515,7 +513,6 @@ If you need to deploy or customize the frontend separately, please refer to the 
      ```
 
 5. **Code Quality Check**
-
    - Run global syntax and lint checks:
 
      ```bash
@@ -600,10 +597,10 @@ After building the frontend, copy the `dist` directory contents into the `data/w
 
 # 🔗 Related Repositories
 
-| Repository       | Description                              | GitHub                                             | Gitee                                            |
-| ---------------- | ---------------------------------------- | -------------------------------------------------- | ------------------------------------------------ |
+| Repository       | Description                                            | GitHub                                             | Gitee                                            |
+| ---------------- | ------------------------------------------------------ | -------------------------------------------------- | ------------------------------------------------ |
 | **Toonflow-app** | Full client (this repo, recommended for regular users) | [GitHub](https://github.com/HBAI-Ltd/Toonflow-app) | [Gitee](https://gitee.com/HBAI-Ltd/Toonflow-app) |
-| **Toonflow-web** | Frontend source code (for frontend developers) | [GitHub](https://github.com/HBAI-Ltd/Toonflow-web) | [Gitee](https://gitee.com/HBAI-Ltd/Toonflow-web) |
+| **Toonflow-web** | Frontend source code (for frontend developers)         | [GitHub](https://github.com/HBAI-Ltd/Toonflow-web) | [Gitee](https://gitee.com/HBAI-Ltd/Toonflow-web) |
 
 > 💡 **Tip**: If you simply want to use Toonflow, download the client from this repository. The frontend repository is for developers who need secondary development or UI customization.
 
@@ -672,7 +669,6 @@ See the full agreement in the [LICENSE](./LICENSE) file.
 
 ---
 
-
 # 🙏 Acknowledgements
 
 We thank the following open-source projects for providing powerful support to Toonflow:
@@ -727,7 +723,5 @@ We also thank the following organizations/units/individuals for their support:
 For the complete list of third-party dependencies, please refer to `NOTICES.txt`
 
 ##### copyright © Beijing Ai'a Technology Co., Ltd.
-
-
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer" width="100%"/>

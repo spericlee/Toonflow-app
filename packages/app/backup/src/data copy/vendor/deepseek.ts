@@ -130,8 +130,7 @@ const vendor: VendorConfig = {
   version: "2.0",
   author: "Toonflow",
   name: "DeepSeek",
-  description:
-    "DeepSeek 官方接口适配，支持 V4 系列模型与思考模式（思维链输出）。\n\n[前往平台](https://platform.deepseek.com/)",
+  description: "DeepSeek 官方接口适配，支持 V4 系列模型与思考模式（思维链输出）。\n\n[前往平台](https://platform.deepseek.com/)",
   icon: "",
   inputs: [
     { key: "apiKey", label: "API密钥", type: "password", required: true },
@@ -210,4 +209,4 @@ exports.videoRequest = videoRequest;
 exports.ttsRequest = ttsRequest;
 exports.checkForUpdates = checkForUpdates;
 exports.updateVendor = updateVendor;
-export { };
+export {};

@@ -19,7 +19,7 @@
           <vendorConfig v-if="activeMenu === 'vendorConfig'" />
           <requestConfig v-if="activeMenu === 'requestConfig'" />
           <loginConfig v-if="activeMenu === 'loginConfig'" />
-          <agentConfog v-if="activeMenu === 'agentConfog'" />
+          <agentConfig v-if="activeMenu === 'agentConfig'" />
           <promptManage v-if="activeMenu === 'promptManage'" />
           <otherConfig v-if="activeMenu === 'otherConfig'" />
           <dbConfig v-if="activeMenu === 'dbConfig'" />
@@ -45,7 +45,7 @@ import uiConfig from "./components/uiConfig.vue";
 import languageConfig from "./components/languageConfig.vue";
 import requestConfig from "./components/requestConfig.vue";
 import loginConfig from "./components/loginConfig.vue";
-import agentConfog from "./components/agentConfog.vue";
+import agentConfig from "./components/agentConfig.vue";
 import dbConfig from "./components/dbConfig.vue";
 import otherConfig from "./components/otherConfig.vue";
 import about from "./components/about.vue";
@@ -63,9 +63,9 @@ const menuItems = [
   { key: "ui", label: "settings.menu.ui", icon: "i-theme" },
   { key: "language", label: "settings.menu.language", icon: "i-translate" },
   { key: "vendorConfig", label: "settings.menu.vendorConfig", icon: "i-computer" },
-  { key: "agentConfog", label: "settings.menu.agentConfig", icon: "i-color-filter" },
+  { key: "agentConfig", label: "settings.menu.agentConfig", icon: "i-color-filter" },
 
-  { key: "pluginConfig", label: "settings.menu.pluginConfog", icon: "i-color-filter" },
+  { key: "pluginConfig", label: "settings.menu.pluginConfig", icon: "i-color-filter" },
 
   { key: "promptManage", label: "settings.menu.promptManage", icon: "i-tips" },
   { key: "modelMap", label: "settings.menu.modelMap", icon: "i-focus" },

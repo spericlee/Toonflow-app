@@ -1,5 +1,5 @@
 <template>
-  <div class="aiConfog" v-loading="loading">
+  <div class="aiConfig" v-loading="loading">
     <!-- <div class="banner">
       <div class="content f ac jb">
         <div class="textContent ac">
@@ -22,8 +22,8 @@
 
     <div class="modeRadioGroup">
       <t-radio-group v-model="agentUseModeVal" variant="default-filled" @change="(val: string) => updateUseMode(val)">
-        <t-radio value="0">{{ $t('settings.agent.ordinary') }}</t-radio>
-        <t-radio value="1">{{ $t('settings.agent.advanced') }}</t-radio>
+        <t-radio value="0">{{ $t("settings.agent.ordinary") }}</t-radio>
+        <t-radio value="1">{{ $t("settings.agent.advanced") }}</t-radio>
       </t-radio-group>
     </div>
 
@@ -343,7 +343,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.aiConfog {
+.aiConfig {
   display: flex;
   flex-direction: column;
   .banner {

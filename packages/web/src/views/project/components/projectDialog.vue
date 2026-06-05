@@ -61,7 +61,9 @@
                 <div class="artStyleHeader">
                   <span>{{ $t("workbench.project.dialog.visualManual") }}</span>
                   <t-button size="small" variant="outline" @click="openVisualManualDialog()">
-                    <template #icon><i-plus size="14" /></template>
+                    <template #icon>
+                      <i-plus size="14" />
+                    </template>
                     {{ $t("workbench.project.dialog.newVisualManual") }}
                   </t-button>
                 </div>
@@ -76,7 +78,9 @@
                         @click="formState.artStyle = item.stylePath">
                         <div class="imageWrapper">
                           <img :src="item.images && item.images[0]" :alt="item.name" class="artImage" loading="lazy" />
-                          <div class="text">{{ item.name }}</div>
+                          <div class="text">
+                            {{ item.name }}
+                          </div>
                         </div>
                         <t-button class="editBtn" shape="square" @click.stop="openVisualManualDialog(item)">
                           <i-edit theme="outline" size="14" />
@@ -98,7 +102,9 @@
                 <div class="directorManualHeader">
                   <span>{{ $t("workbench.project.dialog.directorManual") }}</span>
                   <t-button size="small" variant="outline" @click="openDirectorManualDialog()">
-                    <template #icon><i-plus size="14" /></template>
+                    <template #icon>
+                      <i-plus size="14" />
+                    </template>
                     {{ $t("workbench.project.dialog.addDirectorManual") }}
                   </t-button>
                 </div>
@@ -113,7 +119,9 @@
                         @click="formState.directorManual = item.directorManual">
                         <div class="imageWrapper">
                           <img :src="item.images && item.images[0]" :alt="item.name" class="artImage" loading="lazy" />
-                          <div class="text">{{ item.name }}</div>
+                          <div class="text">
+                            {{ item.name }}
+                          </div>
                         </div>
                         <t-button class="editBtn" shape="square" @click.stop="openDirectorManualDialog(item)">
                           <i-edit theme="outline" size="14" />
@@ -195,7 +203,7 @@
                         :footers="[]"
                         :placeholder="$t('workbench.project.dialog.promptPlaceholder')"
                         style="height: 30vh; margin-top: 5px"
-                        @onUploadImg="() => {}" />
+                        @on-upload-img="() => {}" />
                     </t-tab-panel>
                   </t-tabs>
                 </div>
@@ -266,7 +274,7 @@
                         :footers="[]"
                         :placeholder="$t('workbench.project.dialog.promptPlaceholder')"
                         style="height: 30vh; margin-top: 5px"
-                        @onUploadImg="() => {}" />
+                        @on-upload-img="() => {}" />
                     </t-tab-panel>
                   </t-tabs>
                 </div>

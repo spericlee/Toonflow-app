@@ -1,6 +1,6 @@
 <template>
-  <div class="editNodel">
-    <t-dialog v-model:visible="editNodelShow" :header="$t('workbench.novel.editDialog.title')" width="50%" top="10vh" placement="center">
+  <div class="editNode">
+    <t-dialog v-model:visible="editNodeShow" :header="$t('workbench.novel.editDialog.title')" width="50%" top="10vh" placement="center">
       <div class="data" style="overflow-x: hidden">
         <t-form label-width="80px">
           <t-form-item :label="$t('workbench.novel.editDialog.chapterName')">
@@ -10,14 +10,17 @@
             <t-textarea v-model="formData.event" :placeholder="$t('workbench.novel.editDialog.eventContentPh')"></t-textarea>
           </t-form-item>
           <t-form-item :label="$t('workbench.novel.editDialog.chapterContent')">
-            <t-textarea :placeholder="$t('workbench.novel.editDialog.chapterContentPh')" v-model="formData.chapterData" :autosize="{ minRows: 15, maxRows: 15 }" />
+            <t-textarea
+              :placeholder="$t('workbench.novel.editDialog.chapterContentPh')"
+              v-model="formData.chapterData"
+              :autosize="{ minRows: 15, maxRows: 15 }" />
           </t-form-item>
         </t-form>
       </div>
       <template #footer>
-        <div class="editNodel-footer">
-          <t-button @click="editNodelShow = false">{{ $t('workbench.novel.editDialog.cancel') }}</t-button>
-          <t-button theme="primary" @click="saveChanges">{{ $t('workbench.novel.editDialog.save') }}</t-button>
+        <div class="editNode-footer">
+          <t-button @click="editNodeShow = false">{{ $t("workbench.novel.editDialog.cancel") }}</t-button>
+          <t-button theme="primary" @click="saveChanges">{{ $t("workbench.novel.editDialog.save") }}</t-button>
         </div>
       </template>
     </t-dialog>
@@ -26,7 +29,7 @@
 
 <script setup lang="ts">
 import axios from "@/utils/axios";
-const editNodelShow = defineModel<boolean>();
+const editNodeShow = defineModel<boolean>();
 const props = defineProps<{
   formData: {
     id: number;
@@ -51,13 +54,13 @@ async function saveChanges() {
       event: props.formData.event,
     });
     emit("select");
-    window.$message.success($t('workbench.novel.editDialog.msg.updateSuccess'));
+    window.$message.success($t("workbench.novel.editDialog.msg.updateSuccess"));
   } catch (e) {
     window.$message.error((e as Error).message);
   } finally {
-    editNodelShow.value = false;
+    editNodeShow.value = false;
   }
-  editNodelShow.value = false; // 关闭对话框
+  editNodeShow.value = false; // 关闭对话框
 }
 </script>
 

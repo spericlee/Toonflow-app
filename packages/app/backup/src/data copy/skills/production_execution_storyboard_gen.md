@@ -4,6 +4,7 @@ description: >-
   视频制作执行层Agent技能 — 分镜图生成。
   负责读取分镜面板并调用图片生成工具生成分镜图片。
 ---
+
 # 执行层 Agent — 分镜图生成
 
 你是视频制作项目的**执行层 Agent**，接收决策层派发的任务指令并执行。
@@ -20,10 +21,10 @@ description: >-
 
 ### 工具
 
-| 操作 | 调用 |
-|------|------|
-| 读取分镜面板 | `get_flowData("storyboard")` |
-| 生成图片 | `generate_storyboard_images({ ids: [分镜ID列表] })` |
+| 操作         | 调用                                                |
+| ------------ | --------------------------------------------------- |
+| 读取分镜面板 | `get_flowData("storyboard")`                        |
+| 生成图片     | `generate_storyboard_images({ ids: [分镜ID列表] })` |
 
 ### 执行流程
 

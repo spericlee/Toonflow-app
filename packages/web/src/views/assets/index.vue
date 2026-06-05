@@ -380,10 +380,10 @@
       :type="assetOptions"
       :title="tabNameMap[assetOptions]"
       :formData="formData"
-      @getFilteredData="getFilteredData(assetOptions)" />
+      @get-filtered-data="getFilteredData(assetOptions)" />
     <generateImage v-model="generateImageShow" @update="loadCurrentTabData" :formData="currentAssetData" />
 
-    <addAudioAssets v-model="addAudioShow" v-if="addAudioShow" :formData="audioFormData" @getFilteredData="getFilteredData(assetOptions)" />
+    <addAudioAssets v-model="addAudioShow" v-if="addAudioShow" :formData="audioFormData" @get-filtered-data="getFilteredData(assetOptions)" />
     <t-dialog
       v-model:visible="mediaPreviewShow"
       :header="mediaPreviewName || $t('workbench.assets.mediaPreview')"
@@ -717,7 +717,7 @@ async function handleBatchGeneratePrompt() {
   try {
     await axios.post("/assetsGenerate/batchPolishAssetsPrompt", {
       projectId: project.value?.id,
-      concurrentCount: otherSetting.value.assetsBatchGenereateSize,
+      concurrentCount: otherSetting.value.assetsBatchGenerateSize,
       items: selectedAssets.map((item: { id: number; name: string; type: string; describe: string }) => ({
         assetsId: item.id,
         type: item.type ?? "props",
@@ -779,7 +779,7 @@ async function handleBatchGenerateImage() {
       projectId: project.value?.id,
       model: selectValue.value,
       resolution: resolution.value,
-      concurrentCount: otherSetting.value.assetsBatchGenereateSize,
+      concurrentCount: otherSetting.value.assetsBatchGenerateSize,
       items: validAssets.map((item) => ({
         id: item.id,
         type: item.type ?? "props",
@@ -1205,7 +1205,7 @@ function findAssetById(id: number): Asset | undefined {
   }
   return undefined;
 }
-const notCompultedData = computed(() => {
+const notCompletedData = computed(() => {
   return getAllAssetsFlat().filter((item) => item.promptState == "生成中");
 });
 const generatingData = computed(() => {
@@ -1216,8 +1216,8 @@ let pollingTimer: ReturnType<typeof setInterval> | null = null;
 let imagePollingTimer: ReturnType<typeof setInterval> | null = null;
 //轮询提示词生成
 async function pollingPromptAssets() {
-  if (notCompultedData.value.length === 0) return;
-  const ids = notCompultedData.value.map((item) => item.id);
+  if (notCompletedData.value.length === 0) return;
+  const ids = notCompletedData.value.map((item) => item.id);
   try {
     const { data } = await axios.post("/assets/pollingPromptAssets", { ids });
     if (Array.isArray(data) && data.length) {
@@ -1262,7 +1262,7 @@ async function pollingImageAssets() {
 function startPolling() {
   if (pollingTimer) return;
   pollingTimer = setInterval(async () => {
-    if (notCompultedData.value.length === 0) {
+    if (notCompletedData.value.length === 0) {
       stopPolling();
       return;
     }
@@ -1295,7 +1295,7 @@ function stopImagePolling() {
   }
 }
 
-watch(notCompultedData, (val) => {
+watch(notCompletedData, (val) => {
   if (val.length > 0) {
     startPolling();
   } else {

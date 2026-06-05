@@ -12,14 +12,21 @@
       </t-card>
     </div>
     <div class="show">
-      <t-dialog v-model:visible="visible" :header="$t('workbench.project.dialog.prompt.title')" width="70%" :close-on-overlay-click="false" @confirm="onConfirm" top="9vh">
-        <MdEditor :theme="themeSetting.mode === 'auto' ? 'light' : themeSetting.mode"
+      <t-dialog
+        v-model:visible="visible"
+        :header="$t('workbench.project.dialog.prompt.title')"
+        width="70%"
+        :close-on-overlay-click="false"
+        @confirm="onConfirm"
+        top="9vh">
+        <MdEditor
+          :theme="themeSetting.mode === 'auto' ? 'light' : themeSetting.mode"
           v-model="promptData.data"
           :toolbars="promptToolbars"
           :footers="[]"
           style="height: 60vh"
           :placeholder="$t('workbench.project.dialog.prompt.placeholder')"
-          @onUploadImg="() => {}" />
+          @on-upload-img="() => {}" />
       </t-dialog>
     </div>
   </div>
