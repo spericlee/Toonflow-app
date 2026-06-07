@@ -4,7 +4,6 @@ import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { TDesignResolver } from "@tdesign-vue-next/auto-import-resolver";
-import { viteSingleFile } from "vite-plugin-singlefile";
 import postcsspxtoviewport from "postcss-px-to-viewport";
 
 export default defineConfig({
@@ -43,7 +42,6 @@ export default defineConfig({
         }),
       ],
     }),
-    viteSingleFile(),
   ],
   resolve: {
     alias: {

@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "查看 NeDB 数据",
+      "program": "${workspaceFolder}/viewDb.ts",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["ts-node"],
+      "console": "integratedTerminal"
+    }
+  ]
+}

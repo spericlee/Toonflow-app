@@ -1,14 +1,20 @@
 {
   "name": "@toonflow/app",
   "scripts": {
-    "dev": "nodemon --inspect --exec tsx src/app.ts",
-    "dev:gui": "cross-env NODE_ENV=dev electronmon -r tsx scripts/main.ts",
-    "start": "cross-env NODE_ENV=prod node build/server/app.cjs",
-    "lint": "tsc --noEmit",
+    "dev": "cross-env NODE_ENV=dev nodemon --inspect --exec tsx src/app.ts",
+    "prod": "cross-env NODE_ENV=prod nodemon --inspect --exec tsx src/app.ts",
+    "electron": "cross-env NODE_ENV=electron nodemon --inspect --exec tsx src/app.ts",
+    "gui:dev": "chcp 65001 && cross-env NODE_ENV=dev electronmon -r tsx scripts/main.ts",
     "dist": "cross-env NODE_ENV=prod tsx ./scripts/dist.ts",
     "pack": "cross-env NODE_ENV=prod tsx ./scripts/pack.ts",
     "debug:ai": "npx @ai-sdk/devtools",
-    "vendor2json": "node scripts/vendor2json.ts"
+    "vendor2json": "node scripts/vendor2json.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:pull": "drizzle-kit pull --config=drizzle.pull.config.ts",
+    "db:seed": "tsx src/utils/db/seed.ts",
+    "db:export": "drizzle-kit export"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.35",
@@ -21,9 +27,11 @@
     "ai": "^6.0.67",
     "axios": "^1.13.2",
     "axios-retry": "^4.5.0",
+    "better-sqlite3": "^12.10.0",
     "bytenode": "^1.5.7",
     "compressing": "^2.1.0",
     "cors": "^2.8.5",
+    "drizzle-orm": "^0.45.2",
     "express": "^5.2.1",
     "fast-glob": "^3.3.3",
     "form-data": "^4.0.5",
@@ -50,6 +58,7 @@
   },
   "devDependencies": {
     "@pnpm/dependency-path": "^1001.1.10",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/graphlib": "^2.1.12",
@@ -60,6 +69,7 @@
     "@types/morgan": "^1.9.10",
     "app-builder-lib": "^26.8.1",
     "cross-env": "^10.1.0",
+    "drizzle-kit": "^0.31.10",
     "electron": "^40.0.0",
     "electron-builder": "^26.8.1",
     "electronmon": "^2.0.4",

@@ -11,12 +11,12 @@ const router = createRouter({
       component: () => import("@/pages/error/404.vue"),
     },
     {
-      path: "/loading",
-      component: () => import("@/pages/loading/index.vue"),
+      path: "/",
+      redirect: "/loading",
     },
     {
-      path: "/",
-      redirect: "/workbench",
+      path: "/loading",
+      component: () => import("@/pages/loading/index.vue"),
     },
     {
       path: "/workbench",
@@ -76,10 +76,13 @@ const router = createRouter({
   ],
 });
 router.beforeEach((to, from, next) => {
-  if (to.path === "/loading") {
+  if ((window as any).process?.versions?.electron) {
     return next();
   }
-  if (localStorage.getItem("electron") == "1") {
+  if (to.path === "/login") {
+    return next();
+  }
+  if (to.path === "/loading") {
     return next();
   }
   if (localStorage.getItem("token")) {

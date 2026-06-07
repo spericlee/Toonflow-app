@@ -30,7 +30,7 @@
     "format:check": "prettier --check .",
     "dist:app": "pnpm --filter @toonflow/app run dist",
     "dist:web": "pnpm --filter @toonflow/web run dist",
-    "pack:app": "pnpm --filter @toonflow/app run pack"
+    "build": "pnpm --filter @toonflow/app run pack"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -13,10 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import useUrl from "@/utils/use/url";
 import logoRaw from "@/../../assets/logo.svg?raw";
 
-const { baseUrl } = useUrl();
 const router = useRouter();
 
 const isPulse = ref(true);
@@ -26,14 +24,6 @@ const isLeaving = ref(false);
 const logoSvg = logoRaw.replace(/<path /g, '<path pathLength="1" ');
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-watch(
-  () => baseUrl.value,
-  async (newVal) => {
-    if (!newVal) return;
-    run();
-  },
-);
 
 async function run() {
   await sleep(1200);
@@ -50,9 +40,21 @@ async function run() {
   router.push("/workbench");
 }
 
-onMounted(() => {
-  if (baseUrl.value) run();
-});
+const isElectron = !!(window as any).process?.versions?.electron;
+if (!isElectron) {
+  run();
+} else {
+  const handler = () => {
+    window.removeEventListener("server-ready", handler);
+    run();
+  };
+  window.addEventListener("server-ready", handler);
+  // 处理竞态：事件可能在监听器注册前就已触发
+  if ((window as any).__serverReady) {
+    window.removeEventListener("server-ready", handler);
+    run();
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -151,7 +153,7 @@ onMounted(() => {
 
     .title {
       font-size: 64px;
-      font-weight: 700;
+      font-weight: bold;
       color: #000000;
       letter-spacing: 2px;
       white-space: nowrap;
@@ -163,7 +165,6 @@ onMounted(() => {
         width 0.6s ease,
         opacity 0.6s ease,
         margin-left 0.6s ease;
-
       &.show {
         width: 350px;
         opacity: 1;

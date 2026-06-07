@@ -14,6 +14,7 @@ const webDir = isElectron ? path.join(exeDir, "resources", "app", "build", "web"
 let baseUrl = "http://localhost:50188";
 let mainWindow: BrowserWindow | null = null;
 const workers: ChildProcess[] = [];
+const workerPorts: number[] = [];
 
 const expressApp = express();
 if (webDir) expressApp.use("/web", express.static(webDir));
@@ -69,24 +70,28 @@ function startServe(): Promise<number[]> {
 }
 
 function setupProxy(ports: number[]): void {
+  workerPorts.splice(0, workerPorts.length, ...ports);
+
   const proxy = httpProxy.createProxyServer({ ws: true, xfwd: true });
 
   proxy.on("error", (err, _req, res) => {
     console.error("[代理错误]", err?.message ?? err);
     const r = res as any;
-    if (r?.writeHead && !r.headersSent) {
+    if (r && typeof r.writeHead === "function" && !r.headersSent) {
       r.writeHead(502, { "Content-Type": "text/plain; charset=utf-8" });
       r.end("Bad Gateway");
-    } else r?.destroy?.();
+    } else if (r && typeof r.destroy === "function") {
+      r.destroy();
+    }
   });
 
   let rrIndex = 0;
-  const nextPort = (): number => ports[rrIndex++ % ports.length];
+  const nextPort = (): number => workerPorts[rrIndex++ % workerPorts.length];
 
   const stickyMap = new Map<string, number>();
   const stickyPort = (key: string): number => {
     let port = stickyMap.get(key);
-    if (port === undefined || !ports.includes(port)) {
+    if (port === undefined || !workerPorts.includes(port)) {
       port = nextPort();
       stickyMap.set(key, port);
     }
@@ -112,7 +117,7 @@ function setupProxy(ports: number[]): void {
     proxy.ws(req, socket, head, { target: `http://127.0.0.1:${port}` });
   });
 
-  console.log(`[代理] 负载均衡已挂载 -> workers:[${ports.join(", ")}]`);
+  console.log(`[代理] 负载均衡已挂载 -> workers:[${workerPorts.join(", ")}]`);
 }
 
 function createWindow(): void {
@@ -131,13 +136,17 @@ function createWindow(): void {
     },
   });
 
+  mainWindow.setMenuBarVisibility(false);
   mainWindow.removeMenu();
 
   mainWindow.webContents.on("before-input-event", (event, input) => {
-    if (input.type === "keyDown" && input.key === "F12") {
-      const wc = mainWindow!.webContents;
-      if (wc.isDevToolsOpened()) wc.closeDevTools();
-      else wc.openDevTools({ mode: "detach" });
+    if (input.key === "F12" && input.type === "keyDown") {
+      const wc = mainWindow?.webContents;
+      if (wc?.isDevToolsOpened()) {
+        wc.closeDevTools();
+      } else {
+        wc?.openDevTools({ mode: "detach" });
+      }
       event.preventDefault();
     }
   });
@@ -145,14 +154,12 @@ function createWindow(): void {
   mainWindow.on("closed", () => (mainWindow = null));
 }
 
-[
-  "--enable-gpu-rasterization",
-  "--enable-zero-copy",
-  "--ignore-gpu-blocklist",
-  "--enable-oop-rasterization",
-  "--disable-spell-checking",
-  "--disable-background-networking",
-].forEach((sw) => app.commandLine.appendSwitch(sw));
+app.commandLine.appendSwitch("--enable-gpu-rasterization");
+app.commandLine.appendSwitch("--enable-zero-copy");
+app.commandLine.appendSwitch("--ignore-gpu-blocklist");
+app.commandLine.appendSwitch("--enable-oop-rasterization");
+app.commandLine.appendSwitch("--disable-spell-checking");
+app.commandLine.appendSwitch("--disable-background-networking");
 
 app.whenReady().then(() => {
   createWindow();
@@ -160,13 +167,17 @@ app.whenReady().then(() => {
 
   startServe().then((ports) => {
     setupProxy(ports);
-    console.log(`[主进程] 服务就绪 ${baseUrl}`);
+    console.log(`[主进程] 服务就绪`);
 
-    const inject = () =>
+    const inject = () => {
       mainWindow?.webContents.executeJavaScript(`window.__serverReady = true; window.dispatchEvent(new CustomEvent('server-ready'));`);
+    };
 
-    if (mainWindow?.webContents.isLoading()) mainWindow.webContents.once("did-finish-load", inject);
-    else inject();
+    if (mainWindow?.webContents.isLoading()) {
+      mainWindow.webContents.once("did-finish-load", inject);
+    } else {
+      inject();
+    }
   });
 
   app.on("activate", () => {

@@ -1,5 +1,4 @@
 <template>
-  <titleBar v-if="isElectron" />
   <t-config-provider :global-config="globalConfig">
     <router-view></router-view>
   </t-config-provider>
@@ -13,21 +12,9 @@ import enConfig from "tdesign-vue-next/es/locale/en_US";
 import { cachedLocale } from "@/locales";
 import { initTheme } from "@/utils/theme";
 import { type GlobalConfigProvider } from "tdesign-vue-next";
-const { baseUrl, isElectron } = storeToRefs(settingStore());
+const { baseUrl } = storeToRefs(settingStore());
 import { config } from "md-editor-v3";
 import { registerUmd } from "@/utils/umd/index";
-
-watch(
-  () => isElectron.value,
-  (newVal) => {
-    if (newVal) {
-      document.body.classList.add("is-electron");
-    } else {
-      document.body.classList.remove("is-electron");
-    }
-  },
-  { immediate: true },
-);
 
 onBeforeMount(() => {
   document.addEventListener("keydown", function (event) {
@@ -73,7 +60,7 @@ async function handleLinkClick(event: MouseEvent) {
   const url = target?.getAttribute("data-link") || target?.getAttribute("href");
   if (!url) return false;
 
-  if (isElectron.value) {
+  if (localStorage.getItem('electron') === "1") {
     await fetch(`toonflow://openurlwithbrowser?url=${encodeURIComponent(url)}`);
   } else {
     window.open(url, "_blank", "noopener,noreferrer");

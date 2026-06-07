@@ -1,5 +1,4 @@
-if(!process.env.NODE_ENV) process.env.NODE_ENV = "dev";
-console.log(`[环境变量：${process.env.NODE_ENV}] 已设置`);
+import "./env";
 import "./err";
 import express, { Request, Response, NextFunction } from "express";
 import { Server } from "socket.io";
@@ -28,39 +27,49 @@ export default async function startServe() {
   app.use(express.json({ limit: "100mb" }));
   app.use(express.urlencoded({ extended: true, limit: "100mb" }));
 
-  // //静态资源
-  // const ossDir = u.getPath("oss");
-  // if (!fs.existsSync(ossDir)) fs.mkdirSync(ossDir, { recursive: true });
-  // app.use("/oss", express.static(ossDir, { acceptRanges: false }));
+  // 源码部署开启静态页面
+  if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "prod") {
+    const webDir = u.getPath("build", "web");
+    app.use("/web", express.static(webDir, { acceptRanges: false }));
+  } else {
+    console.warn("当前环境为electron，未启用/web静态资源服务");
+  }
 
-  // // token 验证中间件
-  // app.use(async (req, res, next) => {
-  //   const setting = await u.db("o_setting").where("key", "tokenKey").select("value").first();
-  //   if (!setting) return res.status(444).send({ message: "服务器秘钥未配置，请联系管理员" });
-  //   const { value: tokenKey } = setting;
-  //   // 从 header 或 query 参数获取 token
-  //   const rawToken = req.headers.authorization || (req.query.token as string) || "";
-  //   const token = rawToken.replace("Bearer ", "");
-  //   // 白名单路径
-  //   if (req.path === "/api/login/login") return next();
+  //静态资源
+  const ossDir = u.getPath("data", "oss");
+  if (!fs.existsSync(ossDir)) fs.mkdirSync(ossDir, { recursive: true });
+  app.use("/oss", express.static(ossDir, { acceptRanges: false }));
 
-  //   if (!token) return res.status(401).send({ message: "未提供token" });
-  //   try {
-  //     const decoded = jwt.verify(token, tokenKey as string);
-  //     (req as any).user = decoded;
-  //     next();
-  //   } catch (err) {
-  //     return res.status(401).send({ message: "无效的token" });
-  //   }
-  // });
+  // 权限验证中间件
+  app.use(async (req, res, next) => {
+    if (process.env.NODE_ENV === "dev") return next();
+    if (process.env.NODE_ENV === "electron") return next();
+    if (process.env.NODE_ENV === "prod") {
+      const tokenKey = u.db.setting.findByKey("tokenKey")?.value;
+      if (!tokenKey) return res.status(444).send({ message: "服务器秘钥未配置，请联系管理员" });
+      // 从 header 或 query 参数获取 token
+      const rawToken = req.headers.authorization || (req.query.token as string) || "";
+      const token = rawToken.replace("Bearer ", "");
+      // 白名单路径
+      if (req.path === "/api/login/login") return next();
+      if (!token) return res.status(401).send({ message: "未提供token" });
+      try {
+        const decoded = jwt.verify(token, tokenKey as string);
+        (req as any).user = decoded;
+        next();
+      } catch (err) {
+        return res.status(401).send({ message: "无效的token" });
+      }
+    } else {
+      return res.status(500).send({ message: "未知的环境配置" });
+    }
+  });
 
   const router = await import("@/router");
   await router.default(app);
 
   // 404 处理
-  app.use((_, res, next: NextFunction) => {
-    return res.status(404).send({ message: "API 404 Not Found" });
-  });
+  app.use((_, res, next: NextFunction) => res.status(404).send({ message: "API 404 Not Found" }));
 
   // 错误处理
   app.use((err: any, _: Request, res: Response, __: NextFunction) => {

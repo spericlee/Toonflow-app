@@ -91,6 +91,7 @@ export default tseslint.config(
       "@typescript-eslint/no-non-null-assertion": "off",
       // 允许空函数
       "@typescript-eslint/no-empty-function": "warn",
+      "@typescript-eslint/no-unused-expressions": "off",
       // 未使用变量以 _ 开头可忽略
       "@typescript-eslint/no-unused-vars": [
         "off",

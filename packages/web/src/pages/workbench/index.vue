@@ -63,6 +63,7 @@
         </div>
       </div>
       <div class="viewBox">
+        <img :src="'/oss/image.png'" alt="" srcset="" />
         <router-view v-slot="{ Component }">
           <component :is="Component" :key="$route.fullPath" />
         </router-view>
