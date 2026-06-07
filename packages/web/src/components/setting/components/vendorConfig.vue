@@ -343,7 +343,6 @@ import { CodeEditor } from "monaco-editor-vue3";
 import { DialogPlugin } from "tdesign-vue-next";
 import axios from "@/utils/axios";
 import VENDOR_CODE_TEMPLATE from "@/lib/vendorTemplate.ts?raw";
-import { providersLogo, modelProviderRules } from "@/utils/providersLogo";
 import type { UploadFile } from "tdesign-vue-next";
 import { LoadingPlugin } from "tdesign-vue-next";
 import settingStore from "@/stores/setting";
@@ -572,8 +571,7 @@ function needsUpdate(vendor: VendorItem): boolean {
 
 function getModelLogo(modelName: string): string | null {
   if (!modelName) return null;
-  const rule = modelProviderRules.find((r) => r.pattern.test(modelName));
-  return rule ? providersLogo[rule.provider] : null;
+  return null;
 }
 
 function buildVendorUpdatePayload(vendor: VendorItem) {

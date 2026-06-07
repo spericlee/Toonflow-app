@@ -69,14 +69,14 @@
       </div>
     </div>
   </div>
-  <hello />
-  <setting />
+  <!-- <hello /> -->
+  <!-- <setting /> -->
 </template>
 
 <script setup lang="ts">
 import axios from "@/utils/axios";
-import setting from "@/components/setting/index.vue";
-import hello from "@/components/hello.vue";
+// import setting from "@/components/setting/index.vue";
+// import hello from "@/components/hello.vue";
 import projectStore from "@/stores/project";
 const { project } = storeToRefs(projectStore());
 import settingStore from "@/stores/setting";
@@ -221,9 +221,9 @@ onUnmounted(() => {
         width: 60%;
         aspect-ratio: 1/1;
         background-color: var(--td-text-color-primary);
-        mask: url("@/assets/logo.svg") no-repeat center;
+        mask: url("@/../../assets/logo.svg") no-repeat center;
         mask-size: contain;
-        -webkit-mask: url("@/assets/logo.svg") no-repeat center;
+        -webkit-mask: url("@/../../assets/logo.svg") no-repeat center;
         -webkit-mask-size: contain;
       }
     }

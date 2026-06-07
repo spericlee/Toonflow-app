@@ -14,11 +14,6 @@ img {
   contentvisibility: "auto";
 }
 
-// 防止弹窗出现时滚动条消失导致页面宽度变化引起抖动
-html {
-  scrollbar-gutter: stable;
-}
-
 // TDesign Dialog 弹出时会给 body 加 overflow:hidden，用 padding-right 补偿滚动条宽度
 // 但若页面本身无滚动条此补偿无效，直接禁用 body 的 overflow 锁定
 body.t-overflow-hidden {

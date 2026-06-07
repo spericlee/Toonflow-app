@@ -25,7 +25,6 @@ import "splitpanes/dist/splitpanes.css";
 
 import "./assets/main.scss";
 
-import { imageOptimizer } from "@/utils/imageOptimizer";
 
 import { z } from "zod";
 import { zhCN } from "zod/locales";
@@ -33,7 +32,6 @@ import { zhCN } from "zod/locales";
 z.config(zhCN());
 
 const app = createApp(App);
-app.use(imageOptimizer);
 install(app, "i");
 app.use(createPinia().use(piniaPluginPersistedstate));
 app.use(router);

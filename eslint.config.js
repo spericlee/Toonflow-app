@@ -82,7 +82,10 @@ export default tseslint.config(
   {
     files: ["**/*.ts", "**/*.vue"],
     rules: {
-      // 允许 any（避免大量遗留代码报错，后续可收紧）
+      //允许单行控制
+      "no-useless-assignment": "off",
+      "no-debugger": "off",
+      // 允许 any
       "@typescript-eslint/no-explicit-any": "off",
       // 允许非空断言
       "@typescript-eslint/no-non-null-assertion": "off",

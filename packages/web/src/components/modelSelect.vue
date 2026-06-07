@@ -33,10 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import { providersLogo, modelProviderRules } from "@/utils/providersLogo";
+import axios from "@/utils/axios";
 import settingStore from "@/stores/setting";
 
-import axios from "@/utils/axios";
 interface VendorChild {
   id: number;
   label: string;
@@ -55,7 +54,7 @@ const selectValue = defineModel({
   default: "",
 });
 
-const selectValueLabel = defineModel("label");
+const selectValueLabel = defineModel<string>("label");
 
 const props = defineProps({
   type: {

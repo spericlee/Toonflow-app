@@ -45,7 +45,7 @@
 <script setup>
 import { useI18n } from "vue-i18n";
 import Router from "@/router/index.ts";
-import logo from "@/assets/logo.png";
+import logo from "@/../../assets/logo.svg";
 import axios from "@/utils/axios";
 import settingStore from "@/stores/setting";
 import { storeToRefs } from "pinia";
@@ -134,9 +134,9 @@ const handleLogin = () => {
         width: 64px;
         height: 64px;
         background-color: var(--td-text-color-primary);
-        mask: url("@/assets/logo.svg") no-repeat center;
+        mask: url("@/../../assets/logo.svg") no-repeat center;
         mask-size: contain;
-        -webkit-mask: url("@/assets/logo.svg") no-repeat center;
+        -webkit-mask: url("@/../../assets/logo.svg") no-repeat center;
         -webkit-mask-size: contain;
       }
 
