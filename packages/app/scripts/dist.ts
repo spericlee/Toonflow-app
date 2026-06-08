@@ -2,6 +2,7 @@ import esbuild from "esbuild";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
+import nativeDeps from "./native.json";
 
 process.env.NODE_ENV = "electron";
 
@@ -15,7 +16,17 @@ export const mainFile = path.resolve(rootDir, "build/electron/main.cjs");
 export const lockFile = path.resolve(rootDir, "pnpm-lock.yaml");
 export const packageFile = path.resolve(rootDir, "package.json");
 
-export const externalDeps = ["electron", "sharp"] as const;
+// 原生依赖配置（唯一来源：scripts/native-deps.json）。各字段含义：
+// - 所有键：esbuild external，不可被打包。
+// - bundle：需以真实文件形式拷贝进应用的 node_modules（electron 由 electron-builder 提供，无需）。
+// - rebuild：需针对 Electron ABI 从源码重建（含 binding.gyp）。
+type NativeDepConfig = { bundle?: boolean; rebuild?: boolean };
+const nativeDepEntries = Object.entries(nativeDeps as Record<string, NativeDepConfig>);
+
+export const externalDeps = nativeDepEntries.map(([name]) => name);
+export const nativeRuntimeDeps = nativeDepEntries.filter(([, c]) => c.bundle).map(([name]) => name);
+export const rebuildModules = nativeDepEntries.filter(([, c]) => c.rebuild).map(([name]) => name);
+
 
 const pkg = JSON.parse(fs.readFileSync(packageFile, "utf8")) as { version: string };
 

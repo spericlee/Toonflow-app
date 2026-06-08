@@ -171,9 +171,9 @@
 
 <script setup lang="ts">
 import axios from "@/utils/axios";
-import atomgitLogo from "@/assets/atomgit.svg";
+import atomgitLogo from "@/../../assets/atomgit.svg";
 import dayjs from "dayjs";
-import toonflowLogo from "@/assets/logo.svg";
+import toonflowLogo from "@/../../assets/logo.svg";
 import store from "@/stores/index";
 import { DialogPlugin, MessagePlugin } from "tdesign-vue-next";
 import { useI18n } from "vue-i18n";

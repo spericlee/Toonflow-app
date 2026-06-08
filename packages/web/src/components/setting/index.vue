@@ -17,20 +17,20 @@
           <uiConfig v-if="activeMenu === 'ui'" />
           <languageConfig v-if="activeMenu === 'language'" />
           <vendorConfig v-if="activeMenu === 'vendorConfig'" />
-          <requestConfig v-if="activeMenu === 'requestConfig'" />
+          <!-- <requestConfig v-if="activeMenu === 'requestConfig'" /> -->
           <loginConfig v-if="activeMenu === 'loginConfig'" />
-          <agentConfig v-if="activeMenu === 'agentConfig'" />
+          <!-- <agentConfig v-if="activeMenu === 'agentConfig'" /> -->
           <promptManage v-if="activeMenu === 'promptManage'" />
           <otherConfig v-if="activeMenu === 'otherConfig'" />
           <dbConfig v-if="activeMenu === 'dbConfig'" />
           <about v-if="activeMenu === 'about'" />
           <logoutConfig v-if="activeMenu === 'logoutConfig'" />
-          <memoryConfig v-if="activeMenu === 'memoryConfig'" />
+          <!-- <memoryConfig v-if="activeMenu === 'memoryConfig'" /> -->
           <fileManagement v-if="activeMenu === 'fileManagement'" />
           <skillManagement v-if="activeMenu === 'skillManagement'" />
           <devConfig v-if="activeMenu === 'devConfig'" />
-          <modelMap v-if="activeMenu === 'modelMap'" />
-          <pluginConfig v-if="activeMenu == 'pluginConfig'" />
+          <!-- <modelMap v-if="activeMenu === 'modelMap'" /> -->
+          <!-- <pluginConfig v-if="activeMenu == 'pluginConfig'" /> -->
         </div>
       </div>
     </div>
@@ -43,39 +43,37 @@ const { showSetting, activeMenu, needUpdate } = storeToRefs(settingStore());
 
 import uiConfig from "./components/uiConfig.vue";
 import languageConfig from "./components/languageConfig.vue";
-import requestConfig from "./components/requestConfig.vue";
+// import requestConfig from "./components/requestConfig.vue";
 import loginConfig from "./components/loginConfig.vue";
-import agentConfig from "./components/agentConfig.vue";
+// import agentConfig from "./components/agentConfig.vue";
 import dbConfig from "./components/dbConfig.vue";
 import otherConfig from "./components/otherConfig.vue";
 import about from "./components/about.vue";
 import logoutConfig from "./components/logoutConfig.vue";
 import vendorConfig from "./components/vendorConfig.vue";
-import memoryConfig from "./components/memoryConfig.vue";
+// import memoryConfig from "./components/memoryConfig.vue";
 import fileManagement from "./components/fileManagement.vue";
 import skillManagement from "./components/skillManagement.vue";
 import devConfig from "./components/devConfig.vue";
 import promptManage from "./components/promptManage.vue";
-import modelMap from "./components/modelMap.vue";
-import pluginConfig from "./components/pluginConfig.vue";
+// import modelMap from "./components/modelMap.vue";
+// import pluginConfig from "./components/pluginConfig.vue";
 
 const menuItems = [
   { key: "ui", label: "settings.menu.ui", icon: "i-theme" },
   { key: "language", label: "settings.menu.language", icon: "i-translate" },
   { key: "vendorConfig", label: "settings.menu.vendorConfig", icon: "i-computer" },
-  { key: "agentConfig", label: "settings.menu.agentConfig", icon: "i-color-filter" },
-
+  // { key: "agentConfig", label: "settings.menu.agentConfig", icon: "i-color-filter" },
   { key: "pluginConfig", label: "settings.menu.pluginConfig", icon: "i-color-filter" },
-
   { key: "promptManage", label: "settings.menu.promptManage", icon: "i-tips" },
-  { key: "modelMap", label: "settings.menu.modelMap", icon: "i-focus" },
+  // { key: "modelMap", label: "settings.menu.modelMap", icon: "i-focus" },
   { key: "skillManagement", label: "settings.menu.skillsSkillsManagement", icon: "i-ring" },
-  { key: "memoryConfig", label: "settings.menu.memoryConfig", icon: "i-memory-card-one" },
+  // { key: "memoryConfig", label: "settings.menu.memoryConfig", icon: "i-memory-card-one" },
   { key: "loginConfig", label: "settings.menu.loginConfig", icon: "i-lock" },
   { key: "dbConfig", label: "settings.menu.dbConfig", icon: "i-data" },
   { key: "fileManagement", label: "settings.menu.fileManagement", icon: "i-hard-disk" },
   { key: "otherConfig", label: "settings.menu.otherConfig", icon: "i-application-menu" },
-  { key: "requestConfig", label: "settings.menu.requestConfig", icon: "i-api" },
+  // { key: "requestConfig", label: "settings.menu.requestConfig", icon: "i-api" },
   { key: "devConfig", label: "settings.menu.devConfig", icon: "i-flask" },
   { key: "about", label: "settings.menu.about", icon: "i-info" },
   { key: "logoutConfig", label: "settings.menu.logoutConfig", icon: "i-logout" },

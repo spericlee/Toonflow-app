@@ -1,8 +1,8 @@
-// @routes-hash fa5ef78a96f162288342ee0840eddc99
+// @routes-hash f0799b7d534454769aed14b16191fb9e
 import { Express } from "express";
 
-import route1 from "./routes/b";
+import route1 from "./routes/login/login";
 
 export default async (app: Express) => {
-  app.use("/api/b", route1);
+  app.use("/api/login/login", route1);
 }

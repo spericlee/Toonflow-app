@@ -94,6 +94,10 @@ export default defineConfig({
         target: "http://localhost:10588",
         changeOrigin: true,
       },
+      "/api": {
+        target: "http://localhost:10588",
+        changeOrigin: true,
+      },
     },
   },
 });

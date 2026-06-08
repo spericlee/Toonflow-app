@@ -63,7 +63,6 @@
         </div>
       </div>
       <div class="viewBox">
-        <img :src="'/oss/image.png'" alt="" srcset="" />
         <router-view v-slot="{ Component }">
           <component :is="Component" :key="$route.fullPath" />
         </router-view>
@@ -71,12 +70,12 @@
     </div>
   </div>
   <!-- <hello /> -->
-  <!-- <setting /> -->
+  <setting />
 </template>
 
 <script setup lang="ts">
 import axios from "@/utils/axios";
-// import setting from "@/components/setting/index.vue";
+import setting from "@/components/setting/index.vue";
 // import hello from "@/components/hello.vue";
 import projectStore from "@/stores/project";
 const { project } = storeToRefs(projectStore());

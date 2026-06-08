@@ -11,10 +11,9 @@
     "vendor2json": "node scripts/vendor2json.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio",
-    "db:pull": "drizzle-kit pull --config=drizzle.pull.config.ts",
     "db:seed": "tsx src/utils/db/seed.ts",
-    "db:export": "drizzle-kit export"
+    "db:pull": "drizzle-kit pull --config=drizzle.config.ts",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.35",
@@ -30,6 +29,7 @@
     "better-sqlite3": "^12.10.0",
     "bytenode": "^1.5.7",
     "compressing": "^2.1.0",
+    "conf": "^15.1.0",
     "cors": "^2.8.5",
     "drizzle-orm": "^0.45.2",
     "express": "^5.2.1",
@@ -57,6 +57,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
+    "@electron/rebuild": "^4.0.4",
     "@pnpm/dependency-path": "^1001.1.10",
     "@types/better-sqlite3": "^7.6.13",
     "@types/cors": "^2.8.19",

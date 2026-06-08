@@ -42,9 +42,8 @@ export default async function startServe() {
 
   // 权限验证中间件
   app.use(async (req, res, next) => {
-    if (process.env.NODE_ENV === "dev") return next();
     if (process.env.NODE_ENV === "electron") return next();
-    if (process.env.NODE_ENV === "prod") {
+    else {
       const tokenKey = u.db.setting.findByKey("tokenKey")?.value;
       if (!tokenKey) return res.status(444).send({ message: "服务器秘钥未配置，请联系管理员" });
       // 从 header 或 query 参数获取 token
@@ -60,8 +59,6 @@ export default async function startServe() {
       } catch (err) {
         return res.status(401).send({ message: "无效的token" });
       }
-    } else {
-      return res.status(500).send({ message: "未知的环境配置" });
     }
   });
 

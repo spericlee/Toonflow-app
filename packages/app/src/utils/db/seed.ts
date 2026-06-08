@@ -3,7 +3,7 @@ import u from "@/utils";
 import { md5 } from "js-md5";
 import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 import { db } from "./index";
-import { users } from "./schema/schema";
+import { users, setting } from "./schema/schema";
 
 async function seed() {
   console.log("🔄 执行迁移...");
@@ -17,6 +17,11 @@ async function seed() {
 
   db.insert(users)
     .values([{ username: "admin", password: md5("admin123" + salt) }])
+    .returning()
+    .all();
+
+  db.insert(setting)
+    .values([{ key: "tokenKey", value: salt }])
     .returning()
     .all();
 

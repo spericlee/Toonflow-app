@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, protocol } from "electron";
 import { fork, ChildProcess } from "child_process";
 import os from "os";
 import http from "http";
@@ -158,15 +158,26 @@ app.whenReady().then(() => {
   createWindow();
   mainWindow?.loadURL(`${baseUrl}/web/#/loading`);
 
-  startServe().then((ports) => {
-    setupProxy(ports);
-    console.log(`[主进程] 服务就绪 ${baseUrl}`);
+  startServe()
+    .then((ports) => {
+      setupProxy(ports);
+      console.log(`[主进程] 服务就绪 ${baseUrl}`);
 
-    const inject = () =>
-      mainWindow?.webContents.executeJavaScript(`window.__serverReady = true; window.dispatchEvent(new CustomEvent('server-ready'));`);
+      const inject = () =>
+        mainWindow?.webContents.executeJavaScript(`window.__serverReady = true; window.dispatchEvent(new CustomEvent('server-ready'));`);
 
-    if (mainWindow?.webContents.isLoading()) mainWindow.webContents.once("did-finish-load", inject);
-    else inject();
+      if (mainWindow?.webContents.isLoading()) mainWindow.webContents.once("did-finish-load", inject);
+      else inject();
+    })
+    .catch((err) => {
+      console.error("[主进程] 启动服务失败:", err);
+      mainWindow?.loadURL(`${baseUrl}/web/#/error?err=${encodeURIComponent(String(err))}`);
+    });
+
+  protocol.handle("toonflow", (request) => {
+    const url = new URL(request.url);
+    const filePath = path.join(exeDir, "resources", "app", "build", url.pathname);
+    return new Response(JSON.stringify({}));
   });
 
   app.on("activate", () => {

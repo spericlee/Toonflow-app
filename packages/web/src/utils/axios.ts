@@ -8,7 +8,7 @@ const instance = axios.create();
 
 instance.interceptors.request.use(function (config) {
   const { otherSetting } = storeToRefs(settingStore());
-
+  config.baseURL = window.location.protocol + "//" + window.location.host + "/api";
   config.timeout = otherSetting.value.axiosTimeOut;
   const token = localStorage.getItem("token");
   if (token) {

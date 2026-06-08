@@ -1,0 +1,5 @@
+{
+  "electron": {},
+  "sharp": { "bundle": true },
+  "better-sqlite3": { "bundle": true, "rebuild": true }
+}

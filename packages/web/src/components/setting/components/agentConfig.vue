@@ -118,7 +118,7 @@
 
 <script setup lang="ts">
 import modelSelect from "@/components/modelSelect.vue";
-import { providersLogo, modelProviderRules } from "@/utils/providersLogo";
+import { getLogo } from "@/utils/vendorLogo";
 import axios from "@/utils/axios";
 import settingStore from "@/stores/setting";
 const { isElectron } = storeToRefs(settingStore());
@@ -145,15 +145,13 @@ const selectLabel = ref<string>("");
 
 function getProviderLogo(manufacturer: string) {
   if (!manufacturer) return null;
-  const key = Object.keys(providersLogo).find((k) => k.toLowerCase() === manufacturer.toLowerCase());
-  return key ? providersLogo[key as keyof typeof providersLogo] : null;
+  return getLogo(manufacturer);
 }
 
 function inferProviderByModel(modelName?: string, model?: string) {
   const source = `${modelName || ""} ${model || ""}`.trim();
   if (!source) return null;
-  const matchedRule = modelProviderRules.find((rule: { pattern: RegExp }) => rule.pattern.test(source));
-  return matchedRule ? providersLogo[matchedRule.provider] : null;
+  return getLogo(source);
 }
 
 function getDisplayLogo(item: ModelType) {
@@ -214,14 +212,6 @@ function confirmConfig() {
     .finally(() => {
       modelDataShow.value = false;
     });
-}
-//跳转官方网站
-async function jumpToWebsite() {
-  if (isElectron.value) {
-    await fetch(`toonflow://openurlwithbrowser?url=https://api.toonflow.net`);
-  } else {
-    window.open("https://api.toonflow.net", "_blank");
-  }
 }
 const loading = ref(false);
 
