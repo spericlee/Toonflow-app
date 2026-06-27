@@ -146,11 +146,12 @@ class OSS {
    * @throws 路径不在 OSS 根目录内等错误
    */
   async writeFile(userRelPath: string, data: Buffer | string): Promise<void> {
+    if (data == null || (typeof data === "string" && data.length === 0) || (Buffer.isBuffer(data) && data.length === 0)) {
+      throw new Error("写入文件数据为空: " + userRelPath);
+    }
     await this.ensureInit();
     const absPath = resolveSafeLocalPath(userRelPath, this.rootDir);
     await fs.mkdir(path.dirname(absPath), { recursive: true });
-    // 如果 data 是 string，则视为 base64 编码，先解码再写入
-    // 自动去除可能存在的 Data URL 前缀（如 "data:image/png;base64,"）
     const buffer = typeof data === "string" ? Buffer.from(data.replace(/^data:[^;]+;base64,/, ""), "base64") : data;
     await fs.writeFile(absPath, buffer);
   }

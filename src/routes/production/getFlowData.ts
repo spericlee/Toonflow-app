@@ -85,7 +85,11 @@ export default router.post(
       return res.status(200).send(success(flowData));
     } else {
       try {
-        const storyboardData = await u.db("o_storyboard").where("scriptId", episodesId);
+        const storyboardData = await u.db("o_storyboard")
+      .where("scriptId", episodesId)
+      .where(function() {
+        this.whereNull("reason").orWhere("reason", "!=", "__wb_placeholder__");
+      });
 
         await Promise.all(
           storyboardData.map(async (i) => {

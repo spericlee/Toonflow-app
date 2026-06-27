@@ -207,6 +207,13 @@ export default router.post(
         ),
       });
     }
+    trackList.sort((a, b) => {
+      const aStoryboards = storyboardTrackRecord[a.id!] || [];
+      const bStoryboards = storyboardTrackRecord[b.id!] || [];
+      const aMinIdx = aStoryboards.reduce((m, s) => Math.min(m, s.index ?? 1/0), 1/0);
+      const bMinIdx = bStoryboards.reduce((m, s) => Math.min(m, s.index ?? 1/0), 1/0);
+      return aMinIdx - bMinIdx;
+    });
     res.status(200).send(
       success({
         storyboardList: await Promise.all(

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol, systemPreferences } from "electron";
+import { app, BrowserWindow, protocol, systemPreferences } from "electron/main";
 import path from "path";
 import fs from "fs";
 import Module from "module";

@@ -172,7 +172,7 @@ const textRequest = (model: TextModel, think: boolean, thinkLevel: 0 | 1 | 2 | 3
     extraBody.reasoning_effort = effortMap[thinkLevel];
   }
 
-  return createOpenAICompatible({
+  return createDeepSeek({
     baseURL: vendor.inputValues.baseUrl,
     apiKey,
     fetch: async (url: string, options?: RequestInit) => {
@@ -181,12 +181,55 @@ const textRequest = (model: TextModel, think: boolean, thinkLevel: 0 | 1 | 2 | 3
         ...rawBody,
         ...extraBody
       };
-      return await fetch(url, {
+      const response = await fetch(url, {
         ...options,
         body: JSON.stringify(modifiedBody),
       });
+
+      if (!response.ok || !response.body) return response;
+
+      const headers = new Headers(response.headers);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      const transformStream = new TransformStream<Uint8Array, Uint8Array>({
+        async start(controller) {
+          function emit(line: string) {
+            controller.enqueue(new TextEncoder().encode(line + "\n"));
+          }
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+              if (buffer) emit(buffer);
+              controller.close();
+              break;
+            }
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            for (let i = 0; i < lines.length - 1; i++) {
+              let line = lines[i];
+              if (line.startsWith("data: ") && !line.startsWith("data: [DONE]")) {
+                try {
+                  const parsed = JSON.parse(line.slice(6));
+                  if (parsed.choices?.[0]?.delta?.tool_calls) {
+                    for (const tc of parsed.choices[0].delta.tool_calls) {
+                      if (tc.type === "") tc.type = "function";
+                    }
+                    line = "data: " + JSON.stringify(parsed);
+                  }
+                } catch {}
+              }
+              emit(line);
+            }
+            buffer = lines[lines.length - 1];
+          }
+        },
+      });
+
+      return new Response(transformStream.readable, { status: response.status, statusText: response.statusText, headers });
     },
-  }).chatModel(model.modelName);
+  }).chat(model.modelName);
 };
 
 const imageRequest = async (config: ImageConfig, model: ImageModel): Promise<string> => {

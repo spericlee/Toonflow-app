@@ -58,12 +58,15 @@ export async function ensureThumbnail(
   thumbnailPath: string,
   size?: ThumbnailSize,
 ): Promise<string | null> {
-  // 小图已存在，直接返回
   if (fss.existsSync(thumbnailPath)) {
     return thumbnailPath;
   }
-  // 原图不存在，无法生成
   if (!fss.existsSync(originalPath)) {
+    return null;
+  }
+  const stat = fss.statSync(originalPath);
+  if (stat.size === 0) {
+    console.warn("[image] 原图文件为空, 跳过缩略图生成:", originalPath);
     return null;
   }
   try {

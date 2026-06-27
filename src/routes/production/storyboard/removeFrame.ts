@@ -12,13 +12,21 @@ export default router.post(
   }),
   async (req, res) => {
     const { id } = req.body;
-    const storyboardData = await u.db("o_storyboard").where("id", id).select("id", "track", "trackId", "flowId").first();
+    const storyboardData = await u.db("o_storyboard").where("id", id).select("id", "track", "trackId", "flowId", "index", "scriptId", "projectId").first();
     if (!storyboardData) return res.status(400).send(error("未找到该分镜"));
     if (storyboardData?.flowId) await u.db("o_imageFlow").where("id", storyboardData?.flowId).delete();
     const trackData = await u.db("o_storyboard").where("track", storyboardData.track).select("id");
+    const deletedIndex = storyboardData.index;
     if (trackData.length == 1) await u.db("o_videoTrack").where("id", storyboardData.trackId).delete();
     await u.db("o_storyboard").where("id", id).delete();
     await u.db("o_assets2Storyboard").where("storyboardId", id).delete();
+    if (deletedIndex != null) {
+      await u.db("o_storyboard")
+        .where("scriptId", storyboardData.scriptId)
+        .where("projectId", storyboardData.projectId)
+        .where("index", ">", deletedIndex)
+        .decrement("index", 1);
+    }
     res.status(200).send(success({ message: "视频删除成功" }));
   },
 );
