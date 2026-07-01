@@ -33,6 +33,8 @@ export default function runCode(code: string, vendor?: Record<string, any>) {
     urlToBase64,
     mergeImages,
     pollTask,
+    pollTaskWithRetry,
+    pollTaskWithRecovery,
     fetch: fetch,
     exports,
     axios,
@@ -104,6 +106,57 @@ export async function pollTask(
     await new Promise((res) => setTimeout(res, interval));
   }
   return { completed: false, error: "timeout" };
+}
+
+export async function pollTaskWithRetry(
+  fn: () => Promise<{ completed: boolean; data?: string; error?: string }>,
+  interval = 3000,
+  timeout = 3000000,
+  maxRetries = 2,
+): Promise<{ completed: boolean; data?: string; error?: string }> {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    const result = await pollTask(fn, interval, timeout);
+    if (result.completed || !result.error?.includes?.("timeout")) {
+      return result;
+    }
+    if (attempt < maxRetries) {
+      const delay = 10000 * attempt;
+      await new Promise((r) => setTimeout(r, delay));
+    }
+  }
+  return { completed: false, error: "timeout" };
+}
+
+export async function pollTaskWithRecovery(
+  fn: () => Promise<{ completed: boolean; data?: string; error?: string; taskId?: string }>,
+  interval = 3000,
+  timeout = 3000000,
+  maxRetries = 2,
+  taskMeta?: { videoId?: number; vendorConfigId?: string },
+): Promise<{ completed: boolean; data?: string; error?: string; taskId?: string }> {
+  let lastTaskId: string | undefined;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    const wrappedFn = async () => {
+      const r = await fn();
+      if (r.taskId) lastTaskId = r.taskId;
+      if (r.taskId && taskMeta?.videoId && taskMeta.vendorConfigId) {
+        try {
+          await u.db("o_video").where("id", taskMeta.videoId).update({ vendorTaskId: r.taskId });
+        } catch (e) {}
+      }
+      return r;
+    };
+    const result: any = await pollTask(wrappedFn, interval, timeout);
+    if (result.completed || !result.error?.includes?.("timeout")) {
+      if (lastTaskId) result.taskId = lastTaskId;
+      return result;
+    }
+    if (attempt < maxRetries) {
+      const delay = 10000 * attempt;
+      await new Promise((r) => setTimeout(r, delay));
+    }
+  }
+  return { completed: false, error: "timeout", taskId: lastTaskId };
 }
 
 /**

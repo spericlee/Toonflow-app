@@ -94,8 +94,8 @@ export default router.post(
     );
 
     res.status(200).send(success(tasks.map((t) => ({ videoId: t.videoId, trackId: t.trackId }))));
+
     for (const { videoId, videoPath, prompt, duration, images } of tasks) {
-      // 所有任务全部并发后台执行，完全不阻塞任何进程
       const base64 = await Promise.all(
         images.map(async (item) => {
           if (!item) return null;
@@ -103,36 +103,42 @@ export default router.post(
         }),
       );
       const relatedObjects = { projectId, videoId, scriptId, type: "视频" };
-      const aiVideo = u.Ai.Video(model);
-      aiVideo
-        .run(
-          {
-            prompt,
-            referenceList: base64.filter(Boolean) as ReferenceList[],
-            mode: modeData.length > 0 ? modeData : mode,
-            duration,
-            aspectRatio: (ratio?.videoRatio as "16:9" | "9:16") || "16:9",
-            resolution,
-            audio,
-          },
-          {
-            projectId,
-            taskClass: "视频生成",
-            describe: "根据提示词生成视频",
-            relatedObjects: JSON.stringify(relatedObjects),
-          },
-        )
-        .then(async () => await aiVideo.save(videoPath))
-        .then(async () => await u.db("o_video").where("id", videoId).update({ state: "生成成功" }))
-        .catch(async (error: any) => {
-          await u
-            .db("o_video")
-            .where("id", videoId)
-            .update({
-              state: "生成失败",
-              errorReason: u.error(error).message,
-            });
-        });
+
+      const generateWithRetry = async (retryCount = 0): Promise<void> => {
+        const aiVideo = u.Ai.Video(model);
+        try {
+          await aiVideo.run(
+            {
+              prompt,
+              referenceList: base64.filter(Boolean) as ReferenceList[],
+              mode: modeData.length > 0 ? modeData : mode,
+              duration,
+              aspectRatio: (ratio?.videoRatio as "16:9" | "9:16") || "16:9",
+              resolution,
+              audio,
+            },
+            {
+              projectId,
+              taskClass: "视频生成",
+              describe: "根据提示词生成视频",
+              relatedObjects: JSON.stringify(relatedObjects),
+            },
+          );
+          await aiVideo.save(videoPath);
+          await u.db("o_video").where("id", videoId).update({ state: "生成成功" });
+        } catch (error: any) {
+          const errMsg = u.error(error).message || "";
+          if (errMsg.includes("timeout") && retryCount < 2) {
+            await new Promise((r) => setTimeout(r, 10000 * (retryCount + 1)));
+            return generateWithRetry(retryCount + 1);
+          }
+          await u.db("o_video").where("id", videoId).update({
+            state: "生成失败",
+            errorReason: errMsg,
+          });
+        }
+      };
+      generateWithRetry();
     }
   },
 );
