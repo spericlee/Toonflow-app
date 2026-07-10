@@ -193,6 +193,39 @@ const imageRequest = async (config: ImageConfig, model: ImageModel): Promise<str
   };
   const size = sizeTable[config.size]?.[config.aspectRatio] || "1024x1024";
 
+  const hasReferences = config.referenceList && config.referenceList.length > 0;
+
+  if (hasReferences) {
+    const images = config.referenceList.map((ref) => ref.base64);
+
+    logger(`[bull] 开始图生图: model=${model.modelName}, prompt=${config.prompt}, referenceCount=${images.length}`);
+
+    const body: Record<string, any> = {
+      model: model.modelName,
+      prompt: config.prompt,
+      image: images.length === 1 ? images[0] : images,
+      n: 1,
+      size,
+      response_format: "b64_json",
+    };
+
+    const resp = await axios.post(`${baseUrl}/images/edits`, body, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+    });
+
+    const data = resp.data;
+    if (data.data && data.data[0]) {
+      const result = data.data[0];
+      if (result.b64_json) return `data:image/png;base64,${result.b64_json}`;
+      if (result.url) return await urlToBase64(result.url);
+    }
+    throw new Error("图片生成失败：未返回有效结果");
+  }
+
+  logger(`[bull] 开始文生图: model=${model.modelName}, size=${size}, prompt=${config.prompt}`);
   const body: Record<string, any> = {
     model: model.modelName,
     prompt: config.prompt,
@@ -201,12 +234,6 @@ const imageRequest = async (config: ImageConfig, model: ImageModel): Promise<str
     response_format: "b64_json",
   };
 
-  if (config.referenceList && config.referenceList.length > 0) {
-    const images = config.referenceList.map((ref) => ref.base64);
-    body.image = images.length === 1 ? images[0] : images;
-  }
-
-  logger(`[bull] 开始文生图: model=${model.modelName}, size=${size}`);
   const resp = await axios.post(`${baseUrl}/images/generations`, body, {
     headers: {
       "Content-Type": "application/json",
