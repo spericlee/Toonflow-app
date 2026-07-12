@@ -61,10 +61,9 @@ export async function runDecisionAI(ctx: AgentContext) {
     videoMode = projectInfo.mode ?? "";
   }
   const isRef = Array.isArray(videoMode) ? true : false;
-  // const findData = models.find((i: any) => i.modelName == videoModelName);
-  // const isRef = findData.mode.every((i: any) => Array.isArray(i));
 
-  const modelInfo = `项目使用的模型如下：\n图像模型：${imageModelName}\n视频模型：${videoModelName}\n多参：${isRef ? "是" : "否"}`;
+  const imageToImageModelName = projectInfo.imageToImageModel ? projectInfo.imageToImageModel.split(/:(.+)/)[1] : null;
+  const modelInfo = `项目使用的模型如下：\n图像模型：${imageModelName}${imageToImageModelName ? `\n图生图模型：${imageToImageModelName}` : ""}\n视频模型：${videoModelName}\n多参：${isRef ? "是" : "否"}`;
 
   const mem = buildMemPrompt(await memory.get(text));
 
@@ -161,7 +160,8 @@ async function createSubAgent(parentCtx: AgentContext) {
   }
   const isRef = Array.isArray(videoMode) ? true : false;
 
-  const modelInfo = `项目使用的模型如下：\n图像模型：${imageModelName}\n视频模型：${videoModelName}\n多参：${isRef ? "是" : "否"}`;
+  const imageToImageModelName = projectInfo.imageToImageModel ? projectInfo.imageToImageModel.split(/:(.+)/)[1] : null;
+  const modelInfo = `项目使用的模型如下：\n图像模型：${imageModelName}${imageToImageModelName ? `\n图生图模型：${imageToImageModelName}` : ""}\n视频模型：${videoModelName}\n多参：${isRef ? "是" : "否"}`;
 
   // const run_sub_agent_execution = tool({
   //   description: "执行层子Agent，负责衍生资产、",

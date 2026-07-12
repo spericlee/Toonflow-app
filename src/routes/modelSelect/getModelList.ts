@@ -25,11 +25,13 @@ export default router.post(
           type === "all"
             ? models.filter((item: { type: string }) => item.type !== "video")
             : models.filter((item: { type: string }) => item.type === type);
-        return filtered.map((item: { name: string; modelName: string; type: string }) => ({
+        return filtered.map((item: { name: string; modelName: string; type: string; mode?: string[]; vendorId?: string }) => ({
           id: data.id,
           label: item.name,
           value: item.modelName,
           type: item.type,
+          mode: item.mode || [],
+          vendorId: item.vendorId || data.id,
           name: vendorData.name,
         }));
       }),

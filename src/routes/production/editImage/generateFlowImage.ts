@@ -19,7 +19,7 @@ async function urlToBase64(imageUrl: string): Promise<string> {
 export default router.post(
   "/",
   validateFields({
-    model: z.string(),
+    model: z.string().optional(),
     references: z.array(z.string()).optional(),
     quality: z.string(),
     ratio: z.string(),
@@ -27,7 +27,16 @@ export default router.post(
     projectId: z.number(),
   }),
   async (req, res) => {
-    const { model, references = [], quality, ratio, prompt, projectId } = req.body;
+    let { model, references = [], quality, ratio, prompt, projectId } = req.body;
+    const project = await u.db("o_project").where("id", projectId).select("imageToImageModel", "imageModel").first();
+    if (!model) {
+      model = project?.imageToImageModel || project?.imageModel;
+      if (!model) {
+        return res.status(400).send(error("项目未配置图片生成模型"));
+      }
+    } else if (project?.imageToImageModel && model === project?.imageModel && model !== project?.imageToImageModel) {
+      model = project.imageToImageModel;
+    }
     try {
       const imageClass = await u.Ai.Image(model).run(
         {

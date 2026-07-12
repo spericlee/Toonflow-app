@@ -13,6 +13,17 @@ export default router.post(
   }),
   async (req, res) => {
     const { edges, nodes } = req.body;
+    let imageToImageModel = "";
+    let imageModel = "";
+    const nodeIds = nodes.map((n: any) => n.id).filter(Boolean);
+    if (nodeIds.length > 0) {
+      const sb = await u.db("o_storyboard").whereIn("id", nodeIds).select("projectId").first();
+      if (sb?.projectId) {
+        const project = await u.db("o_project").where("id", sb.projectId).select("imageToImageModel", "imageModel").first();
+        imageToImageModel = project?.imageToImageModel || "";
+        imageModel = project?.imageModel || "";
+      }
+    }
     nodes.forEach((node: any) => {
       if (node.type == "upload") {
         node.data.image = node.data.image ? u.replaceUrl(node.data.image) : "";
@@ -23,6 +34,11 @@ export default router.post(
         node.data.references.forEach((item: { image: string }) => {
           item.image = item.image ? u.replaceUrl(item.image) : "";
         });
+      }
+      if (imageToImageModel && (!node.data.model || node.data.model === imageModel)) {
+        node.data.model = imageToImageModel;
+      } else if (!node.data.model) {
+        node.data.model = imageModel;
       }
     });
     const [insertFlowId] = await u.db("o_imageFlow").insert({

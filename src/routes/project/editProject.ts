@@ -17,15 +17,16 @@ export default router.post(
     directorManual: z.string(),
     videoRatio: z.string(),
     imageModel: z.string(),
+    imageToImageModel: z.string().optional(),
     videoModel: z.string(),
     projectType: z.string(),
     imageQuality: z.string(),
     mode: z.string(),
   }),
   async (req, res) => {
-    const { id, name, intro, type, artStyle, videoRatio, directorManual, imageModel, videoModel, imageQuality, projectType, mode } = req.body;
+    const { id, name, intro, type, artStyle, videoRatio, directorManual, imageModel, imageToImageModel, videoModel, imageQuality, projectType, mode } = req.body;
 
-    await u.db("o_project").where("id", id).update({
+    const updateData: Record<string, any> = {
       name,
       intro,
       type,
@@ -37,7 +38,12 @@ export default router.post(
       imageQuality,
       projectType,
       mode,
-    });
+    };
+    if (imageToImageModel !== undefined) {
+      updateData.imageToImageModel = imageToImageModel || null;
+    }
+
+    await u.db("o_project").where("id", id).update(updateData);
 
     res.status(200).send(success({ message: "编辑项目成功" }));
   },

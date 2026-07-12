@@ -31,6 +31,7 @@ export default async (knex: Knex, forceInit: boolean = false): Promise<void> => 
         table.integer("id");
         table.string("projectType");
         table.string("imageModel");
+        table.string("imageToImageModel");
         table.string("imageQuality");
         table.string("videoModel");
         table.text("name");
@@ -1050,5 +1051,14 @@ export default async (knex: Knex, forceInit: boolean = false): Promise<void> => 
         console.log("[初始化数据库] 表数据初始化:", t.name);
       }
     }
+  }
+
+  // Migration: add imageToImageModel column to o_project if missing
+  const projectHasCol = await knex.schema.hasColumn("o_project", "imageToImageModel");
+  if (!projectHasCol) {
+    await knex.schema.alterTable("o_project", (table) => {
+      table.string("imageToImageModel");
+    });
+    console.log("[初始化数据库] o_project 添加 imageToImageModel 列");
   }
 };

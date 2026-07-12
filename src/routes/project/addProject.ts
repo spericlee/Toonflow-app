@@ -17,12 +17,13 @@ export default router.post(
     directorManual: z.string(),
     videoRatio: z.string(),
     imageModel: z.string(),
+    imageToImageModel: z.string().optional(),
     videoModel: z.string(),
     imageQuality: z.string(),
     mode: z.string(),
   }),
   async (req, res) => {
-    const { projectType, name, intro, type, directorManual, artStyle, videoRatio, imageModel, videoModel, imageQuality, mode } = req.body;
+    const { projectType, name, intro, type, directorManual, artStyle, videoRatio, imageModel, imageToImageModel, videoModel, imageQuality, mode } = req.body;
 
     await u.db("o_project").insert({
       id: Date.now(),
@@ -35,6 +36,7 @@ export default router.post(
       directorManual,
       userId: 1,
       imageModel,
+      imageToImageModel: imageToImageModel || null,
       videoModel,
       createTime: Date.now(),
       imageQuality,
